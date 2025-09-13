@@ -1,22 +1,15 @@
 <template>
   <a-config-provider :theme="themeStore.themeConfig">
     <div
-      class="tw:bg-[#bdd2a9] dark:tw:bg-[#0b1f2a] tw:relative tw:grid tw:grid-cols-5 tw:grid-rows-8 tw:w-full tw:h-screen"
-    >
+      class="tw:bg-[#bdd2a9] tw:dark:bg-[#0b1f2a] tw:relative tw:grid tw:grid-cols-5 tw:grid-rows-8 tw:w-full tw:h-screen">
       <div class="tw:col-span-4 tw:col-start-2 tw:row-start-1">
         <AppHeader :userName="user?.name" @logout="logout" />
       </div>
 
-      <SideMenu
-        :items="items"
-        v-model:selectedKeys="state.selectedKeys"
-        v-model:openKeys="state.openKeys"
-        @select="onMenuClick"
-      />
+      <SideMenu :items="items" v-model:selectedKeys="state.selectedKeys" v-model:openKeys="state.openKeys"
+        @select="onMenuClick" />
 
-      <div
-        class="tw:bg-amber-200 dark:tw:bg-amber-950 tw:col-span-4 tw:row-span-7 tw:col-start-2 tw:row-start-2"
-      ></div>
+      <div class="tw:bg-amber-200 tw:dark:bg-amber-950 tw:col-span-4 tw:row-span-7 tw:col-start-2 tw:row-start-2"></div>
 
       <ThemeFab />
     </div>

@@ -2,8 +2,8 @@ import { ref, computed, watch } from "vue";
 import { theme } from "ant-design-vue";
 import { defineStore } from "pinia";
 
+export const isDark = ref(false);
 export const useThemeStore = defineStore("theme", () => {
-  const isDark = ref(true);
 
   const lightTokens = {
     colorPrimary: "#d7cefd",

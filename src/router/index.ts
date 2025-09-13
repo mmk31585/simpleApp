@@ -1,6 +1,7 @@
-import { createMemoryHistory, createRouter } from "vue-router";
+
+import { createWebHistory, createRouter } from "vue-router";
 import LoginPage from "@/view/auth/login.vue";
-import Dashboard from "@/view/dashbord/index.vue";
+import Dashboard from "@/view/dashboard/index.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const routes = [
@@ -9,13 +10,18 @@ const routes = [
 ];
 
 export const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 });
-router.beforeEach((to, _, next) => {
+
+router.beforeEach((to) => {
   const auth = useAuthStore();
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return next("/");
+
+  const persisted = localStorage.getItem("auth");
+  const hasToken =
+    auth.isAuthenticated || (persisted && JSON.parse(persisted)?.token);
+
+  if (to.meta.requiresAuth && !hasToken) {
+    return { path: "/" };
   }
-  next();
 });
