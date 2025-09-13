@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import InstallAnt from "./plugins/antd";
 import App from "./App.vue";
 import { router } from "./router";
-import "./style.css";
+import "@/assets/style.css";
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

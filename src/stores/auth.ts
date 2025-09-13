@@ -33,6 +33,7 @@ export const useAuthStore = defineStore(
         } else {
           errorMessage.value = "خطای ناشناخته";
         }
+        throw new Error(errorMessage.value);
       } finally {
         loading.value = false;
       }
