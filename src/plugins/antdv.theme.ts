@@ -9,6 +9,7 @@ export const lightTokens = {
   colorBgBase: "#f7f8fb",
   colorBgLayout: "#bdd2a9",
   colorTextBase: "#111827",
+  colorText: "#111827",
   borderRadius: 12,
   fontFamily: '"Peyda","Vazirmatn", ui-sans-serif, system-ui',
 };
@@ -22,6 +23,7 @@ export const darkTokens = {
   colorBgBase: "#0b1f2a",
   colorBgLayout: "#0b1f2a",
   colorTextBase: "#f3f4f6",
+  colorText: "#f3f4f6",
   borderRadius: 12,
   fontFamily: '"Peyda","Vazirmatn", ui-sans-serif, system-ui',
 };

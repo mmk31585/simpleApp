@@ -7,7 +7,7 @@ const themeStore = useThemeStore();
 </script>
 
 <template>
-  <a-config-provider :theme="themeConfig(themeStore.isDark)">
+  <a-config-provider :theme="{ cssVar: true, ...themeConfig(themeStore.isDark) }">
     <RouterView />
   </a-config-provider>
 </template>

@@ -2,6 +2,8 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+
 @font-face {
   font-family: "Peyda";
   src: url("./font/Peyda/PeydaWeb-Medium.woff2") format("woff2");

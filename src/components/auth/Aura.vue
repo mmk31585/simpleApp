@@ -8,7 +8,7 @@ import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { useThemeStore } from "@/stores/theme";
 
 const themeStore = useThemeStore();
-
+defineOptions({ name: "AuroraEffect" });
 interface AuroraProps {
   colorStops?: string[] | null;
   amplitude?: number;
