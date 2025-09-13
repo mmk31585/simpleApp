@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { isDark } from '@/stores/theme'
-import LoginForm from "@/features/auth/ui/LoginForm.vue";
-import Aurora from "@/features/auth/ui/Aura.vue";
+import LoginForm from "@/components/auth/LoginForm.vue";
+import Aurora from "@/components/auth/Aura.vue";
 defineOptions({ name: "LoginPage" });
 </script>
