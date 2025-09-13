@@ -2,7 +2,7 @@
   <a-menu :items="items" mode="inline" :selectedKeys="selected" :openKeys="opened"
     @update:selectedKeys="(v) => $emit('update:selectedKeys', v as string[])"
     @update:openKeys="(v) => $emit('update:openKeys', v as string[])"
-    @click="(info: any) => $emit('select', { key: info.key })" class="tw-bg-transparent tw-text-white" />
+    @click="(info: any) => $emit('select', { key: info.key })" class="tw:!bg-transparent tw:!text-white" />
 </template>
 
 <script setup lang="ts">
