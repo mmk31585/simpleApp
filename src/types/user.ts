@@ -4,4 +4,3 @@ export interface User {
   family: string;
   email: string;
 }
-
