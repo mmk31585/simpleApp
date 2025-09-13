@@ -1,12 +1,6 @@
-interface User {
-  id: number;
-  name: string;
-  family: string;
-  email: string;
-}
-
+import type { User } from "@/types/user"
 
 export interface LoginResponse {
-  token: string
-  user: User
+  token: string;
+  user: User;
 }
