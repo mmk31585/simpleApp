@@ -23,6 +23,8 @@
   font-style: bold;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap");
+
 .regular {
   font-family: "PeydaRegular", sans-serif;
 }
@@ -33,7 +35,7 @@
 
 html {
   direction: rtl;
-  font-family: "Peyda", sans-serif;
+  font-family: "Peyda", "Vazirmatn", sans-serif;
   user-select: none;
   transition:
     background-color 0.5s,

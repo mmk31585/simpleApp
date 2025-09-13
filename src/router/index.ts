@@ -1,21 +1,33 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/view/auth/login.vue';
-import DashboardLayout from '@/layouts/Dashboard.vue';
-import { useAuthStore } from '@/stores/auth';
+import { createRouter, createWebHistory } from "vue-router";
+import LoginView from "@/view/auth/login.vue";
+import DashboardLayout from "@/layouts/Dashboard.vue";
+import { useAuthStore } from "@/stores/auth";
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'login', component: LoginView },
+    { path: "/", name: "login", component: LoginView },
     {
-      path: '/dashboard',
+      path: "/dashboard",
       component: DashboardLayout,
       meta: { requiresAuth: true },
       children: [
-        { path: '', redirect: '/dashboard/home' },
-        { path: 'home', name: 'DashboardHome', component: () => import('@/view/dashboard/Home.vue') },
-        { path: 'analytics', name: 'AnalyticsPage', component: () => import('@/view/dashboard/Analytics.vue') },
-        { path: 'messages', name: 'MessagesPage', component: () => import('@/view/dashboard/Messages.vue') },
+        { path: "", redirect: "/dashboard/home" },
+        {
+          path: "home",
+          name: "DashboardHome",
+          component: () => import("@/view/dashboard/Home.vue"),
+        },
+        {
+          path: "analytics",
+          name: "AnalyticsPage",
+          component: () => import("@/view/dashboard/Analytics.vue"),
+        },
+        {
+          path: "messages",
+          name: "MessagesPage",
+          component: () => import("@/view/dashboard/Messages.vue"),
+        },
 
         // { path: 'nav/5', component: () => import('@/view/dashboard/Nav5.vue') },
         // { path: 'nav/6', component: () => import('@/view/dashboard/Nav6.vue') },
@@ -32,5 +44,5 @@ export const router = createRouter({
 
 router.beforeEach((to) => {
   const auth = useAuthStore();
-  if (to.meta.requiresAuth && !auth.isAuthenticated) return { path: '/' };
+  if (to.meta.requiresAuth && !auth.isAuthenticated) return { path: "/" };
 });

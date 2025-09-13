@@ -9,5 +9,5 @@
 </template>
 <script setup lang="ts">
 defineProps<{ userName?: string }>();
-defineEmits<{ (e: 'logout'): void }>();
+defineEmits<{ (e: "logout"): void }>();
 </script>

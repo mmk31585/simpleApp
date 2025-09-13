@@ -11,7 +11,10 @@
     <a-form-item name="email">
       <a-input v-model:value="formState.email" placeholder="ایمیل" class="tw:!bg-white/20 tw:h-10">
         <template #prefix>
-          <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+          <UserOutlined
+            :style="{ color: themeStore.themeConfig.token.colorText }"
+            class="tw:ml-2"
+          />
         </template>
       </a-input>
     </a-form-item>
@@ -23,7 +26,10 @@
         class="tw:!bg-white/20 tw:h-10"
       >
         <template #prefix>
-          <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+          <LockOutlined
+            :style="{ color: themeStore.themeConfig.token.colorText }"
+            class="tw:ml-2"
+          />
         </template>
       </a-input>
     </a-form-item>
@@ -33,9 +39,12 @@
         html-type="submit"
         :loading="loading"
         size="large"
-        class="tw:w-full tw:!text-gray-900 tw:dark:!text-blue-200"
+        class="tw:w-full tw:!text-white dark:tw:!text-gray-900"
       >
         ورود
+        <template #icon>
+          <LoginOutlined />
+        </template>
       </a-button>
     </a-form-item>
   </a-form>
@@ -43,13 +52,15 @@
 <script lang="ts" setup>
 import type { Rule } from "ant-design-vue/es/form";
 import { reactive, ref } from "vue";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons-vue";
 import type { UnwrapRef } from "vue";
 import type { FormProps } from "ant-design-vue";
 import { useAuthStore } from "@/stores/auth";
+import { useThemeStore } from "@/stores/theme";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 const authStore = useAuthStore();
+const themeStore = useThemeStore();
 const error = ref<string | null>(null);
 const router = useRouter();
 
@@ -98,11 +109,7 @@ const handleFinishFailed: FormProps["onFinishFailed"] = (errors) => {
 };
 </script>
 <style>
-:where(.css-dev-only-do-not-override-98h8sa).ant-input {
-  background-color: transparent;
-}
-
-:where(.css-dev-only-do-not-override-1erchgq).ant-input {
-  background-color: transparent;
+.ant-input {
+  background-color: transparent !important;
 }
 </style>

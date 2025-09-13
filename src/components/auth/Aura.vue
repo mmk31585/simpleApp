@@ -3,11 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, type CSSProperties, useTemplateRef } from "vue";
+import { onMounted, onUnmounted, watch, type CSSProperties, useTemplateRef, computed } from "vue";
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
+import { useThemeStore } from "@/stores/theme";
+
+const themeStore = useThemeStore();
 
 interface AuroraProps {
-  colorStops?: string[];
+  colorStops?: string[] | null;
   amplitude?: number;
   blend?: number;
   time?: number;
@@ -18,13 +21,30 @@ interface AuroraProps {
 }
 
 const props = withDefaults(defineProps<AuroraProps>(), {
-  colorStops: () => ["#7cff67", "#171D22", "#7cff67"],
+  colorStops: null,
   amplitude: 1.0,
   blend: 0.5,
   speed: 1.0,
   intensity: 1.0,
   className: "",
   style: () => ({}),
+});
+
+const lighten = (hex: string, percent: number) => {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = (num >> 16) + amt;
+  const G = ((num >> 8) & 0x00ff) + amt;
+  const B = (num & 0x0000ff) + amt;
+  return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 1 ? 0 : B) : 255)).toString(16).slice(1)}`;
+};
+
+const auroraColorStops = computed(() => {
+  if (props.colorStops) {
+    return props.colorStops;
+  }
+  const primaryColor = themeStore.themeConfig.token.colorPrimary;
+  return [lighten(primaryColor, -10), primaryColor, lighten(primaryColor, 10)];
 });
 
 const containerRef = useTemplateRef<HTMLDivElement>("containerRef");
@@ -184,7 +204,7 @@ const initAurora = () => {
     delete geometry.attributes.uv;
   }
 
-  const colorStopsArray = props.colorStops.map((hex) => {
+  const colorStopsArray = auroraColorStops.value.map((hex) => {
     const c = new Color(hex);
     return [c.r, c.g, c.b];
   });
@@ -232,8 +252,7 @@ const initAurora = () => {
       program.uniforms.uAmplitude.value = props.amplitude ?? 1.0;
       program.uniforms.uBlend.value = props.blend ?? 0.5;
       program.uniforms.uIntensity.value = props.intensity ?? 1.0;
-      const stops = props.colorStops ?? ["#27FF64", "#7cff67", "#27FF64"];
-      program.uniforms.uColorStops.value = stops.map((hex: string) => {
+      program.uniforms.uColorStops.value = auroraColorStops.value.map((hex: string) => {
         const c = new Color(hex);
         return [c.r, c.g, c.b];
       });
