@@ -1,25 +1,38 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <a-config-provider :theme="themeStore.themeConfig">
-    <a-layout class="tw:h-screen">
-      <a-layout-sider :width="260" class="tw:!bg-[#bdd2a9] tw:dark:!bg-[#0b1f2a]">
-        <SideMenu :items="items" v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" @select="onSelect" />
+    <a-layout class="tw:min-h-screen">
+      <a-layout-sider
+        :width="260"
+        breakpoint="sm"
+        :collapsedWidth="80"
+        class="tw:!bg-[#bdd2a9] tw:dark:!bg-[#0b1f2a]"
+      >
+        <SideMenu
+          :items="items"
+          v-model:selectedKeys="selectedKeys"
+          v-model:openKeys="openKeys"
+          @select="onSelect"
+          class="tw:!top-0 tw:!sticky"
+        />
       </a-layout-sider>
 
       <a-layout>
-        <a-layout-header class="tw:!bg-transparent tw:flex tw:items-center tw:justify-between tw:px-4">
+        <a-layout-header
+          class="tw:!bg-[#cedfbe] tw:dark:!bg-[#132a36] tw:flex tw:items-center tw:justify-between tw:px-4"
+        >
           <AppHeader :userName="user?.name" @logout="logout" />
         </a-layout-header>
 
         <a-layout-content>
-          <keep-alive include="DashboardHome,AnalyticsPage,MessagesPage">
+          <keep-alive include="DashboardHome,AnalyticsPage">
             <router-view />
           </keep-alive>
         </a-layout-content>
       </a-layout>
     </a-layout>
 
-    <ThemeFab />
+    <FloatItem />
   </a-config-provider>
 </template>
 
@@ -30,7 +43,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useThemeStore } from "@/stores/theme";
 import AppHeader from "@/components/layout/AppHeader.vue";
 import SideMenu from "@/components/navigation/slideMenu.vue";
-import ThemeFab from "@/components/common/FloatItem.vue";
+import FloatItem from "@/components/common/FloatItem.vue";
 import { menuItems as items, menuRouteMap } from "@/features/navigation/menuItems";
 
 const themeStore = useThemeStore();
@@ -51,3 +64,8 @@ function onSelect(payload: { key: string }) {
   if (path && route.path !== path) router.push(path);
 }
 </script>
+<style scoped>
+.ant-layout {
+  min-height: 100vh;
+}
+</style>

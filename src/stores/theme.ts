@@ -2,7 +2,7 @@ import { ref, watch, computed } from "vue";
 import { defineStore } from "pinia";
 import { themeConfig as createThemeConfig } from "@/plugins/antdv.theme";
 
-export const isDark = ref(false);
+export const isDark = ref(true);
 export const useThemeStore = defineStore("theme", () => {
   function toggleTheme() {
     isDark.value = !isDark.value;

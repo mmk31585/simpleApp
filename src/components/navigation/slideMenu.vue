@@ -1,9 +1,14 @@
 <template>
-  <a-menu :items="items" mode="inline" :selectedKeys="selected" :openKeys="opened"
+  <a-menu
+    :items="items"
+    mode="inline"
+    :selectedKeys="selected"
+    :openKeys="opened"
     @update:selectedKeys="(v: string[]) => $emit('update:selectedKeys', v)"
     @update:openKeys="(v: string[]) => $emit('update:openKeys', v)"
     @click="(info: any) => $emit('select', { key: info.key })"
-    class="tw:!bg-transparent tw:!text-white tw:hover:!text-blue-50" />
+    class="tw:!bg-transparent tw:!text-white tw:hover:!text-blue-50"
+  />
 </template>
 
 <script setup lang="ts">

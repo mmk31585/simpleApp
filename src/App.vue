@@ -7,7 +7,11 @@ const themeStore = useThemeStore();
 </script>
 
 <template>
-  <a-config-provider :theme="{ cssVar: true, ...themeConfig(themeStore.isDark) }">
+  <a-config-provider
+    :theme="{ cssVar: true, ...themeConfig(themeStore.isDark) }"
+    class="tw:transition-colors tw:duration-150"
+    direction="rtl"
+  >
     <RouterView />
   </a-config-provider>
 </template>

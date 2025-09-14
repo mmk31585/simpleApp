@@ -1,31 +1,31 @@
 import { theme } from "ant-design-vue";
 
 export const lightTokens = {
-  colorPrimary: "#6366f1",
-  colorInfo: "#0891b2",
-  colorSuccess: "#22c55e",
-  colorWarning: "#f59e0b",
-  colorError: "#ef4444",
-  colorBgBase: "#f7f8fb",
-  colorBgLayout: "#bdd2a9",
+  colorPrimary: "#3B82F6",
+  colorInfo: "#0EA5E9",
+  colorSuccess: "#10B981",
+  colorWarning: "#F59E0B",
+  colorError: "#EF4444",
+  colorBgBase: "#F9FAFB",
+  colorBgLayout: "#FFFFFF",
   colorTextBase: "#111827",
-  colorText: "#111827",
+  colorText: "#374151",
   borderRadius: 12,
-  fontFamily: '"Peyda","Vazirmatn", ui-sans-serif, system-ui',
+  fontFamily: '"Inter","Peyda","Vazirmatn", ui-sans-serif, system-ui',
 };
 
 export const darkTokens = {
-  colorPrimary: "#507b8d",
-  colorInfo: "#38bdf8",
-  colorSuccess: "#22c55e",
-  colorWarning: "#f59e0b",
-  colorError: "#ef4444",
-  colorBgBase: "#0b1f2a",
-  colorBgLayout: "#0b1f2a",
-  colorTextBase: "#f3f4f6",
-  colorText: "#f3f4f6",
+  colorPrimary: "#60A5FA",
+  colorInfo: "#38BDF8",
+  colorSuccess: "#34D399",
+  colorWarning: "#FBBF24",
+  colorError: "#F87171",
+  colorBgBase: "#0F172A",
+  colorBgLayout: "#1E293B",
+  colorTextBase: "#F9FAFB",
+  colorText: "#E5E7EB",
   borderRadius: 12,
-  fontFamily: '"Peyda","Vazirmatn", ui-sans-serif, system-ui',
+  fontFamily: '"Inter","Peyda","Vazirmatn", ui-sans-serif, system-ui',
 };
 
 export const themeConfig = (isDark: boolean) => ({
