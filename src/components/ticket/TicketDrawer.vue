@@ -107,8 +107,10 @@
                 <PlayCircleOutlined /> شروع زمان‌سنج
               </a-button>
 
-              <a-statistic-countdown v-if="ticket.isTimerActive && ticket.timerStartTime" :value="getCountdownValue()"
-                format="HH:mm:ss" :value-style="{ fontSize: '14px', color: '#fa8c16' }" />
+              <span v-if="ticket.isTimerActive && ticket.timerStartTime"
+                class="tw:text-[14px] tw:font-semibold tw:text-[#fa8c16] tw:font-mono">
+                {{ countdownDisplay }}
+              </span>
             </div>
           </div>
         </a-card>
@@ -432,11 +434,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useTicketStore } from "@/stores/ticket";
 import { message } from "ant-design-vue";
 import dayjs from "dayjs";
 import type { Ticket } from "@/types/ticket";
+import { useCountdown } from "@/composable/useCountdown";
 import {
   MoreOutlined,
   EditOutlined,
@@ -526,7 +529,6 @@ const getTimeProgressColor = (t: Ticket) => {
   const p = getTimeProgress(t);
   return p >= 90 ? "#ff4d4f" : p >= 70 ? "#fa8c16" : "#52c41a";
 };
-const getCountdownValue = () => dayjs().add(8, "hour").valueOf();
 const getTimelineColor = (t: string) =>
   (
     ({
@@ -545,6 +547,68 @@ const getTimelineIcon = (t: string) =>
       attachment: PaperClipOutlined,
     }) as Record<string, any>
   )[t] || CommentOutlined;
+
+const countdown = useCountdown(0, {
+  intervalMs: 1000,
+  onFinish: () => {
+    if (ticket.value?.id && ticket.value.isTimerActive && ticket.value.timerStartTime) {
+      ticketStore.toggleTimer(ticket.value.id);
+      message.info("زمان‌سنج به پایان رسید");
+    }
+  },
+});
+
+const {
+  display: countdownDisplay,
+  start: startCountdown,
+  reset: resetCountdown,
+} = countdown;
+
+const MS_PER_MINUTE = 60 * 1000;
+const MS_PER_HOUR = 60 * MS_PER_MINUTE;
+
+const computeRemainingEstimateMs = (t: Ticket) => {
+  const estimatedMs = Math.max(0, (t.estimatedHours || 0) * MS_PER_HOUR);
+  const spentMs = Math.max(0, (t.timeSpent || 0) * MS_PER_MINUTE);
+  const startTimestamp = t.timerStartTime ? Date.parse(t.timerStartTime) : NaN;
+  const activeElapsedMs =
+    t.isTimerActive && Number.isFinite(startTimestamp)
+      ? Math.max(0, Date.now() - startTimestamp)
+      : 0;
+  return Math.max(0, estimatedMs - spentMs - activeElapsedMs);
+};
+
+watch(
+  () => {
+    const t = ticket.value;
+    if (!t) return null;
+    return {
+      id: t.id,
+      isTimerActive: t.isTimerActive,
+      timerStartTime: t.timerStartTime,
+      timeSpent: t.timeSpent,
+      estimatedHours: t.estimatedHours,
+    };
+  },
+  (state) => {
+    if (!state) {
+      resetCountdown(0);
+      return;
+    }
+    const t = ticket.value;
+    if (!t) {
+      resetCountdown(0);
+      return;
+    }
+    const remainingMs = computeRemainingEstimateMs(t);
+    if (state.isTimerActive && state.timerStartTime) {
+      startCountdown(remainingMs);
+    } else {
+      resetCountdown(remainingMs);
+    }
+  },
+  { immediate: true },
+);
 
 const toggleTimer = () => {
   if (ticket.value) {

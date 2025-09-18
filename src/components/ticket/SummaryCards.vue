@@ -1,68 +1,49 @@
 <template>
-  <div class="tw:mb-6">
-    <a-row :gutter="[16, 16]">
+  <div class="tw:mb-6 tw:px-4">
+    <a-row :gutter="[8, 8]">
       <a-col :xs="24" :sm="12" :lg="6" v-for="card in summaryData" :key="card.key">
-        <a-card
-          :body-style="{ padding: '20px' }"
-          class="tw:rounded-xl tw:border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:overflow-hidden tw:relative tw:!bg-white tw:dark:!bg-[#1a1a1a] tw:hover:-translate-y-1 tw:hover:shadow-2xl tw:cursor-pointer tw:focus-within:ring-2 tw:focus-within:!ring-[#1890ff]"
-          :class="card.cardClass"
-          :tabindex="0"
-          :aria-label="`کارت ${card.title}`"
-          :title="`اعمال فیلتر: ${card.title}`"
-          @click="handleCardClick(card.key)"
-          @keydown.enter.prevent="handleCardClick(card.key)"
-          @keydown.space.prevent="handleCardClick(card.key)"
-        >
+        <a-card :body-style="{ padding: '20px', height: '100%' }"
+          class="tw:rounded-xl tw:!h-full tw:border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:overflow-hidden tw:relative tw:!bg-white tw:dark:!bg-[#1a1a1a] tw:hover:-translate-y-1 tw:hover:shadow-2xl tw:cursor-pointer tw:focus-within:ring-2 tw:focus-within:!ring-[#1890ff]"
+          :class="card.cardClass" :tabindex="0" :aria-label="`کارت ${card.title}`" :title="`اعمال فیلتر: ${card.title}`"
+          @click="handleCardClick(card.key)" @keydown.enter.prevent="handleCardClick(card.key)"
+          @keydown.space.prevent="handleCardClick(card.key)">
           <div class="tw:flex tw:justify-between tw:items-start tw:mb-4">
             <div class="tw:min-w-0 tw:flex-1">
-              <a-statistic
-                :title="card.title"
-                :value="card.value"
-                :value-style="{ color: card.valueColor, fontSize: '28px', fontWeight: '600' }"
-              />
+              <a-statistic :title="card.title" :value="card.value"
+                :value-style="{ color: card.valueColor, fontSize: '28px', fontWeight: '600' }" />
               <div class="tw:text-[#8c8c8c] tw:dark:text-[#999] tw:text-[12px] tw:mt-1 tw:truncate">
                 {{ card.description }}
               </div>
             </div>
             <div
               class="tw:w-12 tw:h-12 tw:rounded-xl tw:flex tw:items-center tw:justify-center tw:text-2xl tw:opacity-80"
-              :class="card.iconClass"
-            >
+              :class="card.iconClass">
               <component :is="card.icon" />
             </div>
           </div>
 
           <div v-if="card.showProgress" class="tw:mb-3">
-            <a-progress
-              :percent="card.progressPercent"
-              :stroke-color="card.progressColor"
-              :show-info="false"
-              size="small"
-            />
-            <div
-              class="tw:flex tw:justify-between tw:text-[11px] tw:text-[#8c8c8c] tw:dark:text-[#999] tw:mt-1"
-            >
+            <a-progress :percent="card.progressPercent" :stroke-color="card.progressColor" :show-info="false"
+              size="small" />
+            <div class="tw:flex tw:justify-between tw:text-[11px] tw:text-[#8c8c8c] tw:dark:text-[#999] tw:mt-1">
               <span>{{ card.progressText }}</span>
               <span>{{ card.progressPercent }}%</span>
             </div>
           </div>
 
           <div v-if="card.trend" class="tw:flex tw:items-center tw:gap-2">
-            <div
-              class="tw:flex tw:items-center tw:gap-1 tw:text-[12px] tw:font-medium tw:px-1.5 tw:py-0.5 tw:rounded"
-              :class="card.trend.class"
-            >
+            <div class="tw:flex tw:items-center tw:gap-1 tw:text-[12px] tw:font-medium tw:px-1.5 tw:py-0.5 tw:rounded"
+              :class="card.trend.class">
               <component :is="card.trend.icon" />
               <span>{{ card.trend.value }}%</span>
             </div>
             <span class="tw:text-[11px] tw:text-[#8c8c8c] tw:dark:text-[#999]">{{
               card.trend.text
-            }}</span>
+              }}</span>
           </div>
 
           <div
-            class="tw:absolute tw:inset-0 tw:pointer-events-none tw:opacity-0 hover:tw:opacity-100 tw:transition-opacity tw:duration-300 tw:bg-gradient-to-br tw:from-transparent tw:to-white/10 tw:dark:to-white/5"
-          />
+            class="tw:absolute tw:inset-0 tw:pointer-events-none tw:opacity-0 hover:tw:opacity-100 tw:transition-opacity tw:duration-300 tw:bg-gradient-to-br tw:from-transparent tw:to-white/10 tw:dark:to-white/5" />
         </a-card>
       </a-col>
     </a-row>
@@ -80,6 +61,7 @@ import {
   ArrowUpOutlined,
   ArrowDownOutlined,
 } from "@ant-design/icons-vue";
+import type { h } from "vue";
 
 const ticketStore = useTicketStore();
 

@@ -1,10 +1,10 @@
 <template>
   <a-card
-    class="tw:relative tw:flex tw:flex-col  tw:justify-between tw:!h-full tw:rounded-xl tw:!border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:ease-out tw:hover:shadow-lg tw:hover:shadow-[#1890ff] tw:hover:-translate-y-1 tw:hover:!border-[#1890ff] tw:dark:!bg-[#1a1a1a] group"
+    class="tw:relative tw:flex tw:flex-col tw:justify-between tw:!h-full tw:rounded-xl tw:!border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:ease-out tw:hover:shadow-lg tw:hover:shadow-[#1890ff] tw:hover:-translate-y-1 tw:hover:!border-[#1890ff] tw:dark:!bg-[#1a1a1a] group"
     :class="{
       'tw:!border-[#fa8c16] tw:!bg-gradient-to-br tw:from-[#fff7e6] tw:to-white tw:dark:from-[#2b1d00] tw:dark:to-[#1a1a1a]':
         ticket.isPinned,
-    }" :body-style="{ padding: '16px' }" blehovera @click="emit('click')">
+    }" :body-style="{ padding: '16px' }" @click="emit('click')">
     <!-- Card Header -->
     <div class="tw:flex tw:justify-between tw:items-start tw:mb-3">
       <div class="tw:flex tw:flex-col tw:gap-1">
@@ -41,7 +41,6 @@
           </a-menu>
         </template>
       </a-dropdown>
-
     </div>
 
     <!-- Status & Priority Tags -->
@@ -69,14 +68,18 @@
     <div class="tw:mb-4 tw:p-3 tw:bg-[#fafafa] tw:dark:bg-[#262626] tw:rounded-lg">
       <div class="tw:flex tw:justify-between tw:items-center tw:mb-1.5">
         <div class="tw:flex tw:items-center tw:gap-1 tw:text-[12px]">
-          <span class="tw:font-semibold tw:text-[#1890ff]">{{ formatTime(ticket.timeSpent) }}</span>
+          <span class="tw:font-semibold tw:text-[#1890ff]">{{ formatTime(currentSpentMinutes) }}</span>
           <span class="tw:text-[#d9d9d9]">/</span>
           <span class="tw:text-[#8c8c8c]">{{
             formatTime(Math.max(0, (ticket.estimatedHours || 0) * 60))
             }}</span>
         </div>
         <div class="tw:text-[11px] tw:text-[#fa8c16]">
-          {{ formatTime(Math.max(0, (ticket.estimatedHours || 0) * 60 - (ticket.timeSpent || 0))) }}
+          {{
+            formatTime(
+              Math.max(0, (ticket.estimatedHours || 0) * 60 - currentSpentMinutes)
+            )
+          }}
           باقی‌مانده
         </div>
       </div>
@@ -135,6 +138,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useTicketStore } from "@/stores/ticket";
 import { message } from "ant-design-vue";
 import dayjs from "dayjs";
@@ -160,6 +164,14 @@ interface Props {
 
 const props = defineProps<Props>();
 const ticketStore = useTicketStore();
+// ⬇️ مقدار زنده دقیقه‌های مصرف‌شده
+const currentSpentMinutes = computed(() => {
+  // خواندن nowMs باعث می‌شود computed به تیک داخلی وابسته شود
+  // (لازم نیست از مقدارش استفاده کنی؛ همین خواندن، وابستگی می‌سازد)
+  void ticketStore.nowMs
+
+  return ticketStore.getCurrentTimeSpentMinutes(props.ticket.id)
+})
 const emit = defineEmits<{ click: [] }>();
 // Helper functions
 const getStatusColor = (status: string) => {
@@ -247,10 +259,13 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 const getTimeProgress = () => {
-  const estimatedMinutes = Math.max(0, (props.ticket.estimatedHours || 0) * 60);
-  if (!estimatedMinutes) return 0;
-  return Math.min(100, ((props.ticket.timeSpent || 0) / estimatedMinutes) * 100);
-};
+  const estimatedMinutes = Math.max(0, (props.ticket.estimatedHours || 0) * 60)
+  if (!estimatedMinutes) return 0
+  const spent = currentSpentMinutes.value
+  return Math.min(100, (spent / estimatedMinutes) * 100)
+}
+
+
 
 const getProgressColor = () => {
   const progress = getTimeProgress();
@@ -278,7 +293,9 @@ const handleMenuAction = ({ key }: { key: string }) => {
 };
 
 const toggleTimer = () => {
-  ticketStore.toggleTimer(props.ticket.id);
-  message.success(!props.ticket.isTimerActive ? "زمان‌سنج متوقف شد" : "زمان‌سنج شروع شد");
-};
+  const wasActive = props.ticket.isTimerActive
+  ticketStore.toggleTimer(props.ticket.id)
+  message.success(wasActive ? "زمان‌سنج متوقف شد" : "زمان‌سنج شروع شد")
+}
+
 </script>
