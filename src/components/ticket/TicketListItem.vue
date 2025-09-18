@@ -10,7 +10,7 @@
           <div class="tw:flex tw:items-center tw:gap-2 tw:flex-1 tw:min-w-0">
             <PushpinOutlined
               v-if="ticket.isPinned"
-              class="tw:text-[#fa8c16] tw:text-xs tw:shrink-0"
+              class="tw:!text-[#fa8c16] tw:!text-xs tw:!shrink-0"
             />
             <h4
               class="tw:m-0 tw:text-[15px] tw:font-semibold tw:text-[#262626] tw:dark:text-white tw:truncate"
@@ -131,7 +131,7 @@
                 </a-menu-item>
                 <a-menu-item key="pin">
                   <PushpinOutlined />
-                  {{ ticket.isPinned ? "حذف نشان" : "نشان کردن" }}
+                  {{ !ticket.isPinned ? "حذف نشان" : "نشان کردن" }}
                 </a-menu-item>
               </a-menu>
             </template>

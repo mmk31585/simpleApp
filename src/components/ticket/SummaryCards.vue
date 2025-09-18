@@ -4,7 +4,7 @@
       <a-col :xs="24" :sm="12" :lg="6" v-for="card in summaryData" :key="card.key">
         <a-card
           :body-style="{ padding: '20px' }"
-          class="tw:rounded-xl tw:border tw:border-[#f0f0f0] tw:dark:border-[#434343] tw:transition-all tw:duration-300 tw:overflow-hidden tw:relative tw:bg-white tw:dark:bg-[#1a1a1a] hover:tw:-translate-y-1 hover:tw:shadow-2xl tw:cursor-pointer focus-within:tw:ring-2 focus-within:tw:ring-[#1890ff]"
+          class="tw:rounded-xl tw:border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:overflow-hidden tw:relative tw:!bg-white tw:dark:!bg-[#1a1a1a] tw:hover:-translate-y-1 tw:hover:shadow-2xl tw:cursor-pointer tw:focus-within:ring-2 tw:focus-within:!ring-[#1890ff]"
           :class="card.cardClass"
           :tabindex="0"
           :aria-label="`کارت ${card.title}`"

@@ -1,26 +1,25 @@
 <template>
-  <a-drawer
-    v-model:open="ticketStore.isDrawerVisible"
-    title=""
-    :width="600"
-    placement="left"
-    :header-style="{ padding: 0 }"
-    :body-style="{ padding: 0 }"
-  >
-    <div v-if="ticket" class="tw:flex tw:flex-col tw:h-full">
+  <!-- Drawer -->
+  <a-drawer v-model:open="ticketStore.isDrawerVisible" placement="left" :width="640" :maskClosable="true" :zIndex="2000"
+    :header-style="{ padding: 0 }" :body-style="{ padding: 0 }" :maskStyle="{ backdropFilter: 'blur(2px)' }"
+    class="tw:[&_.ant-drawer-body]:p-0 tw:!bg-transparent">
+    <div v-if="ticket" class="tw:flex tw:flex-col tw:h-full tw:bg-white tw:dark:bg-[#121212]">
+      <!-- Header (sticky) -->
       <div
-        class="tw:px-6 tw:py-4 tw:border-b tw:border-[#f0f0f0] tw:dark:border-[#434343] tw:bg-[#fafafa] tw:dark:bg-[#262626]"
-      >
-        <div class="tw:flex tw:items-start tw:justify-between">
+        class="tw:sticky tw:top-0 tw:z-10 tw:px-5 tw:py-3 tw:border-b tw:border-[#f0f0f0] tw:dark:!border-[#2f2f2f] tw:bg-[#fafafa]/90 tw:dark:!bg-[#1a1a1a]/90 tw:backdrop-blur">
+        <div class="tw:flex tw:items-start tw:justify-between tw:gap-2">
           <div class="tw:min-w-0 tw:space-y-1">
-            <h2 class="tw:m-0 tw:text-[18px] tw:font-semibold tw:leading-snug tw:truncate">
-              {{ ticket.title }}
-            </h2>
+            <div class="tw:flex tw:items-center tw:gap-2 tw:min-w-0">
+              <PushpinOutlined v-if="ticket.isPinned" class="tw:!text-[#fa8c16]" />
+              <h2 class="tw:m-0 tw:!text-[18px] tw:font-semibold tw:leading-snug tw:!truncate tw:!text-[#8c8c8c]">
+                {{ ticket.title }}
+              </h2>
+            </div>
             <div class="tw:flex tw:flex-wrap tw:items-center tw:gap-2">
               <span
-                class="tw:text-[12px] tw:text-[#8c8c8c] tw:font-mono tw:bg-[#f5f5f5] tw:dark:bg-[#434343] tw:dark:text-[#a0a0a0] tw:px-1.5 tw:py-0.5 tw:rounded"
-                >{{ ticket.ticketCode }}</span
-              >
+                class="tw:text-[12px] tw:!text-[#8c8c8c] tw:font-mono tw:bg-[#f5f5f5] tw:dark:!bg-[#2a2a2a] tw:dark:!text-[#a0a0a0] tw:px-2 tw:py-0.5 tw:rounded">
+                {{ ticket.ticketCode }}
+              </span>
               <a-tag :color="getStatusColor(ticket.status)">
                 <component :is="getStatusIcon(ticket.status)" />
                 {{ getStatusText(ticket.status) }}
@@ -31,32 +30,32 @@
               </a-tag>
             </div>
           </div>
+
           <div class="tw:flex tw:items-center tw:gap-1">
-            <a-button
-              size="large"
-              type="text"
-              class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md"
-              @click="openFullscreen"
-            >
+            <a-button size="large" type="text" class="tw:rounded-md tw:hover:bg-gray-200 tw:dark:hover:bg-white/10"
+              @click="openFullscreen">
               <ArrowsAltOutlined />
             </a-button>
+
             <a-dropdown :trigger="['click']">
-              <a-button
-                type="text"
-                size="large"
-                class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md"
-              >
+              <a-button type="text" size="large" class="tw:rounded-md tw:hover:bg-gray-200 tw:dark:hover:bg-white/10">
                 <MoreOutlined />
               </a-button>
               <template #overlay>
                 <a-menu @click="handleHeaderAction">
-                  <a-menu-item key="edit"> <EditOutlined /> ویرایش تیکت </a-menu-item>
+                  <a-menu-item key="edit">
+                    <EditOutlined /> ویرایش تیکت
+                  </a-menu-item>
                   <a-menu-item key="pin">
                     <PushpinOutlined /> {{ ticket.isPinned ? "حذف نشان" : "نشان کردن" }}
                   </a-menu-item>
-                  <a-menu-item key="duplicate"> <CopyOutlined /> کپی تیکت </a-menu-item>
+                  <a-menu-item key="duplicate">
+                    <CopyOutlined /> کپی تیکت
+                  </a-menu-item>
                   <a-menu-divider />
-                  <a-menu-item key="delete" danger> <DeleteOutlined /> حذف تیکت </a-menu-item>
+                  <a-menu-item key="delete" danger>
+                    <DeleteOutlined /> حذف تیکت
+                  </a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
@@ -64,160 +63,127 @@
         </div>
       </div>
 
-      <div class="tw:flex-1 tw:overflow-y-auto tw:p-4 tw:space-y-4">
-        <a-card size="small" class="tw:rounded-xl">
+      <!-- Body -->
+      <div class="tw:flex-1 tw:overflow-y-auto tw:p-4 tw:!space-y-4">
+        <!-- Time -->
+        <a-card size="small" class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
           <template #title>
             <div class="tw:flex tw:items-center tw:gap-2">
-              <ClockCircleOutlined />
-              <span>ردیابی زمان</span>
+              <ClockCircleOutlined /><span>ردیابی زمان</span>
             </div>
           </template>
 
           <div class="tw:flex tw:flex-col tw:gap-4">
-            <div class="tw:grid tw:grid-cols-2 tw:md:grid-cols-2 tw:gap-4">
-              <a-statistic
-                title="زمان صرف‌شده"
-                :value="formatTimeForDisplay(ticket.timeSpent)"
-                :value-style="{ fontSize: '20px', fontWeight: '600' }"
-              />
-              <a-statistic
-                title="تخمین کل"
-                :value="formatTimeForDisplay(Math.max(0, (ticket.estimatedHours || 0) * 60))"
-                :value-style="{ fontSize: '16px' }"
-              />
+            <div class="tw:grid tw:grid-cols-2 tw:gap-4">
+              <a-statistic title="زمان صرف‌شده" :value="formatTimeForDisplay(ticket.timeSpent)"
+                :value-style="{ fontSize: '20px', fontWeight: '600' }" />
+              <a-statistic title="تخمین کل"
+                :value="formatTimeForDisplay(Math.max(0, (ticket.estimatedHours || 0) * 60))" />
             </div>
 
             <div class="tw:space-y-2">
-              <a-progress
-                :percent="getTimeProgress(ticket)"
-                :stroke-color="getTimeProgressColor(ticket)"
-                :trail-color="'#f0f0f0'"
-                :stroke-width="8"
-              />
+              <a-progress :percent="getTimeProgress(ticket)" :stroke-color="getTimeProgressColor(ticket)"
+                :show-info="false" :stroke-width="8" />
               <div class="tw:flex tw:justify-between tw:text-[12px] tw:text-[#8c8c8c]">
                 <span>{{ Math.round(getTimeProgress(ticket)) }}% تکمیل شده</span>
-                <span class="tw:text-[#fa8c16] tw:font-medium"
-                  >{{
+                <span class="tw:text-[#fa8c16] tw:font-medium">
+                  {{
                     formatTimeForDisplay(
                       Math.max(0, (ticket.estimatedHours || 0) * 60 - (ticket.timeSpent || 0)),
                     )
                   }}
-                  باقی‌مانده</span
-                >
+                  باقی‌مانده
+                </span>
               </div>
             </div>
 
             <div class="tw:flex tw:flex-wrap tw:items-center tw:gap-3">
-              <a-button
-                v-if="ticket.isTimerActive"
-                type="primary"
-                danger
-                size="large"
-                @click="toggleTimer"
-                class="tw:rounded-lg tw:font-medium tw:animate-pulse tw:hover:bg-gray-200 tw:dark:hover:bg-white"
-              >
-                <PauseCircleOutlined />
-                توقف زمان‌سنج
+              <a-button v-if="ticket.isTimerActive" type="primary" danger size="large" @click="toggleTimer"
+                class="tw:rounded-lg tw:font-medium tw:animate-pulse tw:hover:!bg-gray-200 tw:dark:hover:!bg-white/10">
+                <PauseCircleOutlined /> توقف زمان‌سنج
               </a-button>
-              <a-button
-                v-else
-                type="primary"
-                size="large"
-                @click="toggleTimer"
-                class="tw:rounded-lg tw:font-medium tw:hover:bg-gray-200 tw:dark:hover:bg-white"
-              >
-                <PlayCircleOutlined />
-                شروع زمان‌سنج
+              <a-button v-else type="primary" size="large" @click="toggleTimer"
+                class="tw:rounded-lg tw:font-medium tw:hover:!bg-gray-200 tw:dark:hover:!bg-white/10">
+                <PlayCircleOutlined /> شروع زمان‌سنج
               </a-button>
-              <a-statistic-countdown
-                v-if="ticket.isTimerActive && ticket.timerStartTime"
-                :value="getCountdownValue()"
-                format="HH:mm:ss"
-                :value-style="{ fontSize: '14px', color: '#fa8c16' }"
-              />
+
+              <a-statistic-countdown v-if="ticket.isTimerActive && ticket.timerStartTime" :value="getCountdownValue()"
+                format="HH:mm:ss" :value-style="{ fontSize: '14px', color: '#fa8c16' }" />
             </div>
           </div>
         </a-card>
 
-        <a-card title="جزئیات تیکت" size="small" class="tw:rounded-xl">
-          <a-descriptions :column="1" bordered size="small">
+        <!-- Details -->
+        <a-card title="جزئیات تیکت" size="small"
+          class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
+          <a-descriptions :column="1" bordered size="small"
+            class="tw:[&_.ant-descriptions-item-label]:tw:min-w-[110px]">
             <a-descriptions-item label="درخواست‌دهنده">
               <div class="tw:flex tw:items-center tw:gap-2">
-                <a-avatar
-                  size="small"
-                  :style="{ backgroundColor: getAvatarColor(ticket.requester?.name || 'U') }"
-                  >{{ (ticket.requester?.name || "U").charAt(0) }}</a-avatar
-                >
+                <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(ticket.requester?.name || 'U') }">
+                  {{ (ticket.requester?.name || "U").charAt(0) }}
+                </a-avatar>
                 <span>{{ ticket.requester?.name || "نامشخص" }}</span>
               </div>
             </a-descriptions-item>
+
             <a-descriptions-item label="مسئول">
               <div class="tw:flex tw:items-center tw:gap-2">
-                <a-avatar
-                  size="small"
-                  :style="{ backgroundColor: getAvatarColor(ticket.assignee?.name || 'U') }"
-                  >{{ (ticket.assignee?.name || "U").charAt(0) }}</a-avatar
-                >
+                <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(ticket.assignee?.name || 'U') }">
+                  {{ (ticket.assignee?.name || "U").charAt(0) }}
+                </a-avatar>
                 <span>{{ ticket.assignee?.name || "نامشخص" }}</span>
               </div>
             </a-descriptions-item>
-            <a-descriptions-item label="سرویس"
-              ><a-tag>{{ getServiceText(ticket.service) }}</a-tag></a-descriptions-item
-            >
+
+            <a-descriptions-item label="سرویس"><a-tag>{{ getServiceText(ticket.service) }}</a-tag></a-descriptions-item>
             <a-descriptions-item label="تاریخ ایجاد">{{
               formatDate(ticket.createdAt)
-            }}</a-descriptions-item>
+              }}</a-descriptions-item>
             <a-descriptions-item label="آخرین به‌روزرسانی">{{
               formatDate(ticket.lastUpdated)
-            }}</a-descriptions-item>
+              }}</a-descriptions-item>
+
             <a-descriptions-item v-if="ticket.dueDate" label="مهلت تحویل">
-              <span :class="{ 'tw:text-[#ff4d4f] tw:font-medium': isOverdue(ticket.dueDate) }">{{
-                formatDate(ticket.dueDate)
-              }}</span>
+              <span :class="{ 'tw:text-[#ff4d4f] tw:font-medium': isOverdue(ticket.dueDate) }">
+                {{ formatDate(ticket.dueDate) }}
+              </span>
             </a-descriptions-item>
           </a-descriptions>
         </a-card>
 
-        <a-card title="توضیحات" size="small" class="tw:rounded-xl">
+        <!-- Description -->
+        <a-card title="توضیحات" size="small"
+          class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
           <div class="tw:leading-7 tw:whitespace-pre-wrap tw:text-[#595959] dark:tw:text-[#a0a0a0]">
             {{ ticket.description }}
           </div>
         </a-card>
 
-        <a-card title="تاریخچه فعالیت" size="small" class="tw:rounded-xl">
-          <a-timeline mode="right">
-            <a-timeline-item
-              v-for="comment in ticket.comments || []"
-              :key="comment.id"
-              :color="getTimelineColor(comment.type)"
-            >
+        <!-- Timeline -->
+        <a-card title="تاریخچه فعالیت" size="small"
+          class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
+          <a-timeline mode="right" class="tw:mt-2">
+            <a-timeline-item v-for="c in ticket.comments || []" :key="c.id" :color="getTimelineColor(c.type)">
               <template #dot>
-                <component :is="getTimelineIcon(comment.type)" />
+                <component :is="getTimelineIcon(c.type)" />
               </template>
-              <div class="tw:pr-3 tw:space-y-2">
+              <div class="tw:pr-3 tw:!space-y-2">
                 <div class="tw:flex tw:items-center tw:justify-between">
                   <div class="tw:flex tw:items-center tw:gap-2">
-                    <a-avatar
-                      size="small"
-                      :style="{ backgroundColor: getAvatarColor(comment.author?.name || 'U') }"
-                      >{{ (comment.author?.name || "U").charAt(0) }}</a-avatar
-                    >
-                    <span class="tw:text-[14px] tw:font-medium">{{
-                      comment.author?.name || "-"
-                    }}</span>
+                    <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(c.author?.name || 'U') }">
+                      {{ (c.author?.name || "U").charAt(0) }}
+                    </a-avatar>
+                    <span class="tw:text-[14px] tw:font-medium">{{ c.author?.name || "-" }}</span>
                   </div>
                   <span class="tw:text-[12px] tw:text-[#8c8c8c]">{{
-                    formatDate(comment.createdAt)
-                  }}</span>
+                    formatDate(c.createdAt)
+                    }}</span>
                 </div>
-                <div class="tw:text-[#595959] dark:tw:text-[#a0a0a0]">{{ comment.content }}</div>
-                <div v-if="comment.attachments?.length" class="tw:flex tw:flex-wrap tw:gap-2">
-                  <a-tag
-                    v-for="attachment in comment.attachments"
-                    :key="attachment.id"
-                    class="tw:text-[11px] tw:flex tw:items-center tw:gap-1"
-                  >
-                    <PaperClipOutlined /> {{ attachment.name }}
+                <div class="tw:text-[#595959] dark:tw:text-[#a0a0a0]">{{ c.content }}</div>
+                <div v-if="c.attachments?.length" class="tw:flex tw:flex-wrap tw:gap-2">
+                  <a-tag v-for="a in c.attachments" :key="a.id" class="tw:text-[11px] tw:flex tw:items-center tw:gap-1">
+                    <PaperClipOutlined /> {{ a.name }}
                   </a-tag>
                 </div>
               </div>
@@ -225,23 +191,18 @@
           </a-timeline>
         </a-card>
 
-        <a-card title="افزودن نظر" size="small" class="tw:rounded-xl">
+        <!-- Add Comment -->
+        <a-card title="افزودن نظر" size="small"
+          class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
           <a-form @submit.prevent="handleAddComment">
             <a-form-item>
-              <a-textarea
-                v-model:value="newComment"
-                placeholder="نظر خود را بنویسید..."
-                :rows="4"
-                class="tw:rounded-lg"
-              />
+              <a-textarea v-model:value="newComment" :rows="4" class="tw:rounded-lg"
+                placeholder="نظر خود را بنویسید..." />
             </a-form-item>
+
             <a-form-item>
-              <a-upload-dragger
-                v-model:file-list="fileList"
-                :before-upload="beforeUpload"
-                :max-count="5"
-                class="tw:my-3"
-              >
+              <a-upload-dragger v-model:file-list="fileList" :before-upload="beforeUpload" :max-count="5"
+                class="tw:my-3">
                 <p class="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>
@@ -249,34 +210,27 @@
                 <p class="ant-upload-hint">حداکثر 5 فایل، هر فایل حداکثر 10MB</p>
               </a-upload-dragger>
             </a-form-item>
+
             <a-form-item>
-              <a-button
-                type="primary"
-                html-type="submit"
-                :loading="isAddingComment"
-                class="tw:rounded-lg tw:font-medium"
-              >
-                <SendOutlined />
-                ارسال نظر
+              <a-button type="primary" html-type="submit" :loading="isAddingComment"
+                class="tw:rounded-lg tw:font-medium">
+                <SendOutlined /> ارسال نظر
               </a-button>
             </a-form-item>
           </a-form>
         </a-card>
       </div>
 
+      <!-- Footer (sticky) -->
       <div
-        class="tw:px-6 tw:py-4 tw:border-t tw:border-[#f0f0f0] dark:tw:border-[#434343] tw:bg-[#fafafa] dark:tw:bg-[#262626]"
-      >
+        class="tw:sticky tw:bottom-0 tw:px-5 tw:py-3 tw:border-t tw:border-[#f0f0f0] tw:dark:border-[#2f2f2f] tw:bg-[#fafafa]/90 tw:dark:bg-[#1a1a1a]/90 tw:backdrop-blur">
         <a-space>
-          <a-button
-            type="primary"
-            @click="handleReply"
-            class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md"
-          >
+          <a-button type="primary" @click="handleReply"
+            class="tw:rounded-md tw:hover:bg-gray-200 tw:dark:hover:bg-white/10">
             <EyeOutlined /> پاسخ
           </a-button>
           <a-dropdown :trigger="['click']">
-            <a-button class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md">
+            <a-button class="tw:rounded-md tw:hover:bg-gray-200 tw:dark:hover:bg-white/10">
               <UserOutlined /> تخصیص
             </a-button>
             <template #overlay>
@@ -287,10 +241,7 @@
               </a-menu>
             </template>
           </a-dropdown>
-          <a-popconfirm
-            title="آیا مطمئن هستید که می‌خواهید این تیکت را ببندید؟"
-            @confirm="handleCloseTicket"
-          >
+          <a-popconfirm title="آیا مطمئن هستید که می‌خواهید این تیکت را ببندید؟" @confirm="handleCloseTicket">
             <a-button type="primary" ghost class="tw:rounded-md">
               <CheckCircleOutlined /> بستن تیکت
             </a-button>
@@ -301,47 +252,40 @@
   </a-drawer>
 
   <!-- Fullscreen Modal -->
-  <a-modal
-    :open="isFullscreen"
-    :footer="null"
-    :closable="false"
-    :width="'100%'"
-    wrapClassName="tw:p-0 full-modal"
-    :bodyStyle="{ padding: 0 }"
-  >
-    <div class="tw:h-screen tw:w-screen tw:flex tw:flex-col tw:bg-white dark:tw:bg-[#0f0f0f]">
+  <a-modal :open="isFullscreen" :footer="null" :closable="false" :width="'100%'" :zIndex="2100"
+    wrapClassName="full-modal" :bodyStyle="{ padding: 0 }" :maskStyle="{ backdropFilter: 'blur(4px)' }">
+    <div class="tw:h-screen tw:w-screen tw:flex tw:flex-col tw:!gap-2 tw:bg-white tw:dark:bg-[#0e0e0e]">
+      <!-- Topbar -->
       <div
-        class="tw:flex tw:items-center tw:justify-between tw:px-6 tw:py-3 tw:border-b tw:border-[#f0f0f0] dark:tw:border-[#434343] tw:bg-[#fafafa] dark:tw:bg-[#1a1a1a]"
-      >
-        <div class="tw:flex tw:items-center tw:gap-3 tw:min-w-0">
-          <PushpinOutlined v-if="ticket?.isPinned" class="tw:text-[#fa8c16]" />
-          <h2 class="tw:m-0 tw:text-xl tw:font-semibold tw:truncate">{{ ticket?.title }}</h2>
+        class="tw:sticky tw:!top-0 tw:z-10 tw:flex tw:items-center tw:justify-between tw:px-6 tw:py-3 tw:!border-b tw:!border-[#ececec] tw:dark:!border-[#2a2a2a] tw:!bg-[#f7f7f7]/90 tw:dark:!bg-[#141414]/90 tw:!backdrop-blur">
+        <div class="tw:flex tw:items-center tw:!gap-3 tw:min-w-0">
+          <PushpinOutlined v-if="ticket?.isPinned" class="tw:!text-[#fa8c16]" />
+          <h2 class="tw:m-0 tw:text-lg tw:font-semibold tw:truncate">{{ ticket?.title }}</h2>
           <span
-            class="tw:text-[12px] tw:text-[#8c8c8c] tw:font-mono tw:bg-[#f5f5f5] dark:tw:bg-[#434343] dark:tw:text-[#a0a0a0] tw:px-1.5 tw:py-0.5 tw:rounded"
-            >{{ ticket?.ticketCode }}</span
-          >
+            class="tw:text-[12px] tw:text-[#8c8c8c] tw:font-mono tw:bg-[#f5f5f5] tw:dark:bg-[#2a2a2a] tw:dark:text-[#a0a0a0] tw:px-2 tw:py-0.5 tw:rounded">
+            {{ ticket?.ticketCode }}
+          </span>
           <a-tag :color="getStatusColor(ticket?.status || 'open')">{{
             getStatusText(ticket?.status || "open")
-          }}</a-tag>
+            }}</a-tag>
           <a-tag :color="getPriorityColor(ticket?.priority || 'low')">{{
             getPriorityText(ticket?.priority || "low")
-          }}</a-tag>
+            }}</a-tag>
         </div>
         <div class="tw:flex tw:items-center tw:gap-2">
-          <a-button
-            class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md"
-            @click="exitFullscreen"
-          >
+          <a-button class="tw:rounded-md tw:hover:bg-gray-200 tw:dark:hover:bg-white/10" @click="exitFullscreen">
             <SwapOutlined /> خروج از حالت تمام‌صفحه
           </a-button>
         </div>
       </div>
 
-      <div class="tw:flex-1 tw:overflow-y-auto tw:p-6 tw:space-y-6">
-        <!-- Reuse same blocks as drawer -->
-        <div class="tw:grid lg:tw:grid-cols-3 tw:gap-6">
-          <div class="tw:space-y-6 lg:tw:col-span-2">
-            <a-card size="small" class="tw:rounded-xl">
+      <!-- Content -->
+      <div class="tw:flex-1 tw:overflow-y-auto tw:p-6 tw:!space-y-6">
+        <div class="tw:grid tw:gap-6 tw:lg:grid-cols-3">
+          <div class="tw:space-y-6 tw:lg:col-span-2">
+            <!-- Time -->
+            <a-card size="small"
+              class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
               <template #title>
                 <div class="tw:flex tw:items-center tw:gap-2">
                   <ClockCircleOutlined /><span>ردیابی زمان</span>
@@ -349,26 +293,18 @@
               </template>
               <div class="tw:flex tw:flex-col tw:gap-4">
                 <div class="tw:grid tw:grid-cols-2 tw:gap-4">
-                  <a-statistic
-                    title="زمان صرف‌شده"
-                    :value="formatTimeForDisplay(ticket?.timeSpent || 0)"
-                  />
-                  <a-statistic
-                    title="تخمین کل"
-                    :value="formatTimeForDisplay(Math.max(0, (ticket?.estimatedHours || 0) * 60))"
-                  />
+                  <a-statistic title="زمان صرف‌شده" :value="formatTimeForDisplay(ticket?.timeSpent || 0)" />
+                  <a-statistic title="تخمین کل"
+                    :value="formatTimeForDisplay(Math.max(0, (ticket?.estimatedHours || 0) * 60))" />
                 </div>
                 <div class="tw:space-y-2">
-                  <a-progress
-                    :percent="getTimeProgress(ticket!)"
-                    :stroke-color="getTimeProgressColor(ticket!)"
-                    :trail-color="'#f0f0f0'"
-                    :stroke-width="10"
-                  />
+                  <a-progress :percent="ticket ? getTimeProgress(ticket) : 0"
+                    :stroke-color="ticket ? getTimeProgressColor(ticket) : '#52c41a'" :show-info="false"
+                    :stroke-width="10" />
                   <div class="tw:flex tw:justify-between tw:text-[12px] tw:text-[#8c8c8c]">
-                    <span>{{ Math.round(getTimeProgress(ticket!)) }}% تکمیل شده</span>
-                    <span class="tw:text-[#fa8c16] tw:font-medium"
-                      >{{
+                    <span>{{ ticket ? Math.round(getTimeProgress(ticket)) : 0 }}% تکمیل شده</span>
+                    <span class="tw:text-[#fa8c16] tw:font-medium">
+                      {{
                         formatTimeForDisplay(
                           Math.max(
                             0,
@@ -376,54 +312,47 @@
                           ),
                         )
                       }}
-                      باقی‌مانده</span
-                    >
+                      باقی‌مانده
+                    </span>
                   </div>
                 </div>
               </div>
             </a-card>
 
-            <a-card title="توضیحات" size="small" class="tw:rounded-xl">
-              <div
-                class="tw:leading-7 tw:whitespace-pre-wrap tw:text-[#595959] dark:tw:text-[#a0a0a0]"
-              >
+            <!-- Description -->
+            <a-card title="توضیحات" size="small"
+              class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
+              <div class="tw:leading-7 tw:whitespace-pre-wrap tw:text-[#595959] dark:tw:text-[#a0a0a0]">
                 {{ ticket?.description }}
               </div>
             </a-card>
 
-            <a-card title="تاریخچه فعالیت" size="small" class="tw:rounded-xl">
-              <a-timeline mode="right">
-                <a-timeline-item
-                  v-for="c in ticket?.comments || []"
-                  :key="c.id"
-                  :color="getTimelineColor(c.type)"
-                >
+            <!-- Timeline -->
+            <a-card title="تاریخچه فعالیت" size="small"
+              class="tw:rounded-xl tw:!border-[#f0f0f0] tw:!dark:border-[#2a2a2a] tw:!bg-transparent">
+              <a-timeline mode="right" class="tw:!mt-2">
+                <a-timeline-item v-for="c in ticket?.comments || []" :key="c.id" :color="getTimelineColor(c.type)">
                   <template #dot>
                     <component :is="getTimelineIcon(c.type)" />
                   </template>
-                  <div class="tw:pr-3 tw:space-y-2">
+                  <div class="tw:px-3 tw:!space-y-2">
                     <div class="tw:flex tw:items-center tw:justify-between">
                       <div class="tw:flex tw:items-center tw:gap-2">
-                        <a-avatar
-                          size="small"
-                          :style="{ backgroundColor: getAvatarColor(c.author?.name || 'U') }"
-                          >{{ (c.author?.name || "U").charAt(0) }}</a-avatar
-                        >
+                        <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(c.author?.name || 'U') }">
+                          {{ (c.author?.name || "U").charAt(0) }}
+                        </a-avatar>
                         <span class="tw:text-[14px] tw:font-medium">{{
                           c.author?.name || "-"
-                        }}</span>
+                          }}</span>
                       </div>
                       <span class="tw:text-[12px] tw:text-[#8c8c8c]">{{
                         formatDate(c.createdAt)
-                      }}</span>
+                        }}</span>
                     </div>
-                    <div class="tw:text-[#595959] dark:tw:text-[#a0a0a0]">{{ c.content }}</div>
+                    <div class="tw:text-[#595959] tw:dark:text-[#a0a0a0]">{{ c.content }}</div>
                     <div v-if="c.attachments?.length" class="tw:flex tw:flex-wrap tw:gap-2">
-                      <a-tag
-                        v-for="a in c.attachments"
-                        :key="a.id"
-                        class="tw:text-[11px] tw:flex tw:items-center tw:gap-1"
-                      >
+                      <a-tag v-for="a in c.attachments" :key="a.id"
+                        class="tw:text-[11px] tw:flex tw:items-center tw:gap-1">
                         <PaperClipOutlined /> {{ a.name }}
                       </a-tag>
                     </div>
@@ -433,83 +362,66 @@
             </a-card>
           </div>
 
+          <!-- Right column -->
           <div class="tw:space-y-6">
-            <a-card title="جزئیات تیکت" size="small" class="tw:rounded-xl">
+            <a-card title="جزئیات تیکت" size="small"
+              class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
               <a-descriptions :column="1" bordered size="small">
                 <a-descriptions-item label="درخواست‌دهنده">
                   <div class="tw:flex tw:items-center tw:gap-2">
-                    <a-avatar
-                      size="small"
-                      :style="{ backgroundColor: getAvatarColor(ticket?.requester?.name || 'U') }"
-                      >{{ (ticket?.requester?.name || "U").charAt(0) }}</a-avatar
-                    >
+                    <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(ticket?.requester?.name || 'U') }">
+                      {{ (ticket?.requester?.name || "U").charAt(0) }}
+                    </a-avatar>
                     <span>{{ ticket?.requester?.name || "نامشخص" }}</span>
                   </div>
                 </a-descriptions-item>
                 <a-descriptions-item label="مسئول">
                   <div class="tw:flex tw:items-center tw:gap-2">
-                    <a-avatar
-                      size="small"
-                      :style="{ backgroundColor: getAvatarColor(ticket?.assignee?.name || 'U') }"
-                      >{{ (ticket?.assignee?.name || "U").charAt(0) }}</a-avatar
-                    >
+                    <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(ticket?.assignee?.name || 'U') }">
+                      {{ (ticket?.assignee?.name || "U").charAt(0) }}
+                    </a-avatar>
                     <span>{{ ticket?.assignee?.name || "نامشخص" }}</span>
                   </div>
                 </a-descriptions-item>
-                <a-descriptions-item label="سرویس"
-                  ><a-tag>{{
-                    getServiceText(ticket?.service || "general")
-                  }}</a-tag></a-descriptions-item
-                >
+                <a-descriptions-item label="سرویس"><a-tag>{{
+                  getServiceText(ticket?.service || "general")
+                    }}</a-tag></a-descriptions-item>
                 <a-descriptions-item label="تاریخ ایجاد">{{
                   formatDate(ticket?.createdAt || "")
-                }}</a-descriptions-item>
+                  }}</a-descriptions-item>
                 <a-descriptions-item label="آخرین به‌روزرسانی">{{
                   formatDate(ticket?.lastUpdated || "")
-                }}</a-descriptions-item>
+                  }}</a-descriptions-item>
                 <a-descriptions-item v-if="ticket?.dueDate" label="مهلت تحویل">
-                  <span
-                    :class="{
-                      'tw:text-[#ff4d4f] tw:font-medium': isOverdue(ticket?.dueDate || ''),
-                    }"
-                    >{{ formatDate(ticket?.dueDate || "") }}</span
-                  >
+                  <span :class="{
+                    'tw:text-[#ff4d4f] tw:font-medium': isOverdue(ticket?.dueDate || ''),
+                  }">
+                    {{ formatDate(ticket?.dueDate || "") }}
+                  </span>
                 </a-descriptions-item>
               </a-descriptions>
             </a-card>
 
-            <a-card title="افزودن نظر" size="small" class="tw:rounded-xl">
+            <a-card title="افزودن نظر" size="small"
+              class="tw:rounded-xl tw:!border-[#f0f0f0] tw:dark:!border-[#2a2a2a] tw:!bg-transparent">
               <a-form @submit.prevent="handleAddComment">
-                <a-form-item
-                  ><a-textarea
-                    v-model:value="newComment"
-                    :rows="4"
-                    class="tw:rounded-lg"
-                    placeholder="نظر خود را بنویسید..."
-                /></a-form-item>
+                <a-form-item><a-textarea v-model:value="newComment" :rows="4" class="tw:rounded-lg"
+                    placeholder="نظر خود را بنویسید..." /></a-form-item>
                 <a-form-item>
-                  <a-upload-dragger
-                    v-model:file-list="fileList"
-                    :before-upload="beforeUpload"
-                    :max-count="5"
-                    class="tw:my-3"
-                  >
+                  <a-upload-dragger v-model:file-list="fileList" :before-upload="beforeUpload" :max-count="5"
+                    class="tw:my-3">
                     <p class="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
                     <p class="ant-upload-text">فایل‌های خود را اینجا بکشید یا کلیک کنید</p>
                   </a-upload-dragger>
                 </a-form-item>
-                <a-form-item
-                  ><a-button
-                    type="primary"
-                    html-type="submit"
-                    :loading="isAddingComment"
-                    class="tw:rounded-lg tw:font-medium"
-                  >
+                <a-form-item>
+                  <a-button type="primary" html-type="submit" :loading="isAddingComment"
+                    class="tw:rounded-lg tw:font-medium">
                     <SendOutlined /> ارسال نظر
-                  </a-button></a-form-item
-                >
+                  </a-button>
+                </a-form-item>
               </a-form>
             </a-card>
           </div>
@@ -572,13 +484,13 @@ const getStatusText = (s: string) =>
   s;
 const getPriorityColor = (p: string) =>
   (({ low: "green", medium: "orange", high: "red", critical: "purple" }) as Record<string, string>)[
-    p
+  p
   ] || "default";
 const getPriorityIcon = (p: string) =>
   p === "critical" || p === "high" ? ExclamationCircleOutlined : FlagOutlined;
 const getPriorityText = (p: string) =>
   (({ low: "پایین", medium: "متوسط", high: "بالا", critical: "حیاتی" }) as Record<string, string>)[
-    p
+  p
   ] || p;
 const getServiceText = (s: string) =>
   (
@@ -592,7 +504,7 @@ const getServiceText = (s: string) =>
   )[s] || s;
 const getAvatarColor = (name: string) =>
   ["#1890ff", "#52c41a", "#fa8c16", "#eb2f96", "#722ed1", "#13c2c2"][
-    (name || "U").charCodeAt(0) % 6
+  (name || "U").charCodeAt(0) % 6
   ];
 
 const formatTimeForDisplay = (minutes?: number) => {
@@ -706,5 +618,9 @@ const exitFullscreen = () => {
   height: 100vh;
   padding: 0;
   border-radius: 0;
+}
+
+.ant-modal {
+  top: 0 !important;
 }
 </style>

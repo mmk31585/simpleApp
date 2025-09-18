@@ -1,6 +1,6 @@
 <template>
   <a-card
-    class="tw:mb-6 tw:rounded-xl tw:border tw:border-[#f0f0f0] tw:dark:border-[#434343] tw:bg-white tw:dark:bg-[#1a1a1a]"
+    class="tw:mb-6 tw:rounded-xl tw:border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:!bg-white tw:dark:!bg-[#1a1a1a]"
     :body-style="{ padding: '20px' }"
   >
     <template #title>
@@ -9,15 +9,11 @@
           <FilterOutlined />
           <span>فیلترها و جستجو</span>
         </div>
-        <a-button
-          type="link"
-          size="small"
-          @click="resetAllFilters"
-          class="tw:p-0 tw:text-[12px] tw:rounded tw:hover:bg-gray-200 tw:dark:hover:bg-white"
-        >
+        <!-- <a-button type="link" size="small" @click="resetAllFilters"
+          class="tw:p-0 tw:text-[12px] tw:rounded tw:hover:bg-gray-200 tw:dark:hover:bg-white">
           <ReloadOutlined />
           پاک کردن فیلترها
-        </a-button>
+        </a-button> -->
       </div>
     </template>
 
@@ -104,11 +100,11 @@
 
       <a-row
         :gutter="16"
-        class="tw:mt-4 tw:pt-4 tw:border-t tw:border-[#f0f0f0] tw:dark:border-[#434343]"
+        class="tw:mt-4 tw:pt-4 tw:border-t tw:!border-[#f0f0f0] tw:dark:!border-[#434343]"
       >
         <a-col :span="12">
           <div class="tw:flex tw:items-center tw:gap-3">
-            <label class="tw:text-[14px] tw:font-medium tw:text-[#595959] tw:dark:text-[#a0a0a0]"
+            <label class="tw:text-[14px] tw:font-medium tw:!text-[#595959] tw:dark:!text-[#a0a0a0]"
               >نمایش:</label
             >
             <a-segmented
@@ -121,7 +117,7 @@
         </a-col>
         <a-col :span="12">
           <div class="tw:flex tw:items-center tw:gap-3 tw:justify-end">
-            <label class="tw:text-[14px] tw:font-medium tw:text-[#595959] tw:dark:text-[#a0a0a0]"
+            <label class="tw:text-[14px] tw:font-medium tw:!text-[#595959] tw:dark:!text-[#a0a0a0]"
               >مرتب‌سازی:</label
             >
             <a-select v-model:value="sortBy" @change="onSortChange" style="width: 180px">
@@ -135,7 +131,7 @@
         </a-col>
       </a-row>
 
-      <div class="tw:mt-4 tw:pt-4 tw:border-t tw:border-[#f0f0f0] tw:dark:border-[#434343]">
+      <div class="tw:mt-4 tw:pt-4 tw:border-t tw:!border-[#f0f0f0] tw:dark:!border-[#434343]">
         <span
           class="tw:block tw:mb-2 tw:text-[14px] tw:font-medium tw:text-[#595959] tw:dark:text-[#a0a0a0]"
           >فیلترهای سریع:</span

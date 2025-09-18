@@ -1,15 +1,15 @@
 <template>
   <a-card
-    class="tw:relative tw:h-full tw:rounded-xl tw:!border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:ease-out tw:hover:shadow-lg tw:hover:shadow-[#1890ff] tw:hover:-translate-y-1  tw:hover:!border-[#1890ff] tw:dark:!bg-[#1a1a1a] group"
+    class="tw:relative tw:flex tw:flex-col  tw:justify-between tw:!h-full tw:rounded-xl tw:!border tw:!border-[#f0f0f0] tw:dark:!border-[#434343] tw:transition-all tw:duration-300 tw:ease-out tw:hover:shadow-lg tw:hover:shadow-[#1890ff] tw:hover:-translate-y-1 tw:hover:!border-[#1890ff] tw:dark:!bg-[#1a1a1a] group"
     :class="{
       'tw:!border-[#fa8c16] tw:!bg-gradient-to-br tw:from-[#fff7e6] tw:to-white tw:dark:from-[#2b1d00] tw:dark:to-[#1a1a1a]':
         ticket.isPinned,
-    }" :body-style="{ padding: '16px' }" blehovera>
+    }" :body-style="{ padding: '16px' }" blehovera @click="emit('click')">
     <!-- Card Header -->
     <div class="tw:flex tw:justify-between tw:items-start tw:mb-3">
       <div class="tw:flex tw:flex-col tw:gap-1">
         <div class="tw:flex tw:items-center tw:gap-1.5 tw:mb-1">
-          <PushpinOutlined v-if="ticket.isPinned" class="tw:text-xs tw:text-[#fa8c16]" />
+          <PushpinOutlined v-if="ticket.isPinned" class="tw:!text-xs tw:!text-[#fa8c16]" />
           <h4 class="tw:m-0 tw:text-[15px] tw:font-semibold tw:leading-tight tw:text-[#262626] tw:dark:text-white">
             {{ ticket.title }}
           </h4>
@@ -19,9 +19,8 @@
           {{ ticket.ticketCode }}
         </div>
       </div>
-
       <a-dropdown :trigger="['click']" @click.stop>
-        <a-button type="text" size="small" class="tw:!opacity-0 tw:group-hover:!opacity-100 tw:transition-opacity">
+        <a-button type="text" class="">
           <MoreOutlined />
         </a-button>
         <template #overlay>
@@ -42,6 +41,7 @@
           </a-menu>
         </template>
       </a-dropdown>
+
     </div>
 
     <!-- Status & Priority Tags -->
@@ -76,9 +76,7 @@
             }}</span>
         </div>
         <div class="tw:text-[11px] tw:text-[#fa8c16]">
-          {{
-            formatTime(Math.max(0, (ticket.estimatedHours || 0) * 60 - (ticket.timeSpent || 0)))
-          }}
+          {{ formatTime(Math.max(0, (ticket.estimatedHours || 0) * 60 - (ticket.timeSpent || 0))) }}
           باقی‌مانده
         </div>
       </div>
@@ -119,9 +117,9 @@
     </div>
 
     <!-- Service Badge -->
-    <div class="tw:absolute tw:top-2 tw:left-2">
+    <!-- <div class="tw:absolute tw:top-10 tw:left-1">
       <a-tag size="small" color="blue">{{ getServiceText(ticket.service) }}</a-tag>
-    </div>
+    </div> -->
 
     <!-- Tags -->
     <div v-if="(ticket.tags?.length || 0) > 0" class="tw:flex tw:flex-wrap tw:items-center tw:gap-1">
@@ -162,7 +160,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const ticketStore = useTicketStore();
-
+const emit = defineEmits<{ click: [] }>();
 // Helper functions
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {

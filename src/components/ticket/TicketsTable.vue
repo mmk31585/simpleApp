@@ -1,5 +1,5 @@
 <template>
-  <div class="tw:bg-white tw:dark:bg-[#1a1a1a] tw:rounded-xl tw:shadow-md tw:overflow-hidden">
+  <div class="tw:!bg-white tw:dark:!bg-[#1a1a1a] tw:rounded-xl tw:shadow-md tw:overflow-hidden">
     <div v-if="selectedRowKeys.length > 0"
       class="tw:flex tw:items-center tw:gap-4 tw:px-6 tw:py-3 tw:bg-[#fafafa] tw:dark:bg-[#262626] tw:border-b tw:border-[#f0f0f0] tw:dark:border-[#434343]">
       <span class="tw:font-medium tw:text-[#1890ff]">{{ selectedRowKeys.length }} تیکت انتخاب شده</span>
@@ -37,24 +37,24 @@
       </a-button-group>
     </div>
 
-    <div class="tw:overflow-x-auto">
+    <div class="tw:overflow-x-auto tw:!bg-transparent">
       <a-table size="small" :columns="columns" :data-source="ticketStore.filteredTickets" :row-key="rowKey"
         :row-selection="rowSelection" :pagination="pagination" :scroll="{ x: 1100 }" tableLayout="fixed"
         :customRow="customRow"
-        :rowClassName="() => 'tw:cursor-pointer hover:tw:bg-[#e6f7ff] tw:dark:hover:bg-[#111a2c]'"
-        class="tw:rounded-none">
+        :rowClassName="() => 'tw:cursor-pointer tw:hover:bg-[#e6f7ff] tw:dark:hover:bg-[#111a2c]'"
+        class="tw:rounded-none tw:!bg-transparent">
         <!-- Title -->
         <template #title="{ record }">
           <div class="tw:max-w-[280px]">
             <div class="tw:flex tw:flex-col tw:gap-1">
               <a-tooltip :title="record?.title">
                 <div class="tw:flex tw:items-center tw:gap-2 tw:font-medium tw:leading-5">
-                  <PushpinOutlined v-if="record?.isPinned" class="tw:text-[#fa8c16] tw:text-xs" />
+                  <PushpinOutlined v-if="record?.isPinned" class="tw:!text-[#fa8c16] tw:text-xs" />
                   <span class="tw:truncate">{{ record?.title }}</span>
                 </div>
               </a-tooltip>
               <div class="tw:flex tw:items-center tw:gap-2 tw:flex-wrap">
-                <span class="tw:text-[12px] tw:text-[#8c8c8c] tw:font-mono tw:truncate">{{
+                <span class="tw:text-[12px] tw:!text-[#8c8c8c] tw:font-mono tw:!truncate">{{
                   record?.ticketCode
                 }}</span>
                 <a-tag size="small" v-for="tag in (record?.tags ?? []).slice(0, 2)" :key="tag">{{
@@ -98,7 +98,7 @@
           <div class="tw:flex tw:flex-col tw:gap-1 tw:w-full">
             <a-progress :percent="getTimeProgress(record)" size="small" :stroke-color="getTimeProgressColor(record)"
               :show-info="false" />
-            <div class="tw:flex tw:justify-between tw:text-[11px] tw:text-[#8c8c8c]">
+            <div class="tw:flex tw:justify-between tw:text-[11px] tw:!text-[#8c8c8c]">
               <span class="tw:font-medium">{{ formatTime(record?.timeSpent) }}</span>
               <span>/ {{ formatTime(Math.max(0, (record?.estimatedHours || 0) * 60)) }}</span>
             </div>
@@ -109,7 +109,7 @@
                 <PauseCircleOutlined />
               </a-button>
               <a-button v-else type="text" size="small" @click.stop="toggleTimer(record?.id)"
-                class="tw:hover:bg-gray-200 tw:dark:hover:bg-white tw:rounded-md">
+                class="tw:hover:!bg-gray-200 tw:dark:hover:!bg-white tw:rounded-md">
                 <PlayCircleOutlined />
               </a-button>
             </div>
@@ -139,7 +139,7 @@
                 <template #overlay>
                   <a-menu @click="handleTicketAction($event, record)">
                     <a-menu-item key="pin">
-                      <PushpinOutlined /> {{ record?.isPinned ? "حذف نشان" : "نشان کردن" }}
+                      <PushpinOutlined /> {{ !record?.isPinned ? "حذف نشان" : "نشان کردن" }}
                     </a-menu-item>
                     <a-menu-item key="duplicate">
                       <CopyOutlined /> کپی تیکت
@@ -201,10 +201,8 @@ const rowSelection = computed<TableProps<Ticket>["rowSelection"]>(() => ({
   selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
 }));
 
-const formatPaginationTotal: NonNullable<TablePaginationConfig["showTotal"]> = (
-  total,
-  range,
-) => `${range[0]}-${range[1]} از ${total} تیکت`;
+const formatPaginationTotal: NonNullable<TablePaginationConfig["showTotal"]> = (total, range) =>
+  `${range[0]}-${range[1]} از ${total} تیکت`;
 
 const pagination: TablePaginationConfig = {
   pageSize: 10,
@@ -332,7 +330,6 @@ const handleBulkStatusUpdate = (status: TicketStatus) => {
   message.success(`وضعیت ${ids.length} تیکت به‌روزرسانی شد`);
 };
 
-
 const handleBulkAction = ({ key }: { key: string }) => {
   switch (key) {
     case "assign":
@@ -359,3 +356,8 @@ const handleTicketAction = ({ key }: { key: string }, ticket: Ticket) => {
   }
 };
 </script>
+<!-- <style scoped>
+.ant-table-wrapper .ant-table {
+  background-color: red !important;
+}
+</style> -->
