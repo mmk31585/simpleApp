@@ -38,7 +38,7 @@ export const mockTickets: Ticket[] = [
       {
         id: "1-3",
         content: "در حال بررسی CSS مربوط به viewport و safe-area هستم.",
-        author: { id: "2", name: "سارا رضایی", avatar: "సارا رضایی" as any },
+        author: { id: "2", name: "سارا رضایی", avatar: "سارا رضایی" },
         createdAt: "1402-10-25T14:02:40+03:30",
         type: "status-change",
       },

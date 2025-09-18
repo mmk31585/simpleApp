@@ -1,15 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div
-    class="tw:w-full tw:h-full tw:p-4 sm:tw:p-6 tw:space-y-6 tw:bg-white/60 tw:dark:bg-white/5 tw:backdrop-blur"
-  >
+  <div class="tw:w-full tw:h-full tw:p-4 sm:tw:p-6 tw:space-y-6 tw:!bg-white/60 tw:dark:!bg-white/5 tw:backdrop-blur">
     <a-page-header :ghost="true" class="tw:p-0" title="آنالیز" sub-title="نمای کلی عملکرد">
       <template #extra>
-        <a-segmented
-          v-model:value="granularity"
-          :options="['ماهانه', 'هفتگی', 'روزانه']"
-          style="direction: ltr"
-        />
+        <a-segmented v-model:value="granularity" :options="['ماهانه', 'هفتگی', 'روزانه']" style="direction: ltr" />
         <a-select v-model:value="channel" style="min-width: 140px">
           <a-select-option value="all">همه کانال‌ها</a-select-option>
           <a-select-option value="organic">ارگانیک</a-select-option>
@@ -22,7 +16,7 @@
 
     <a-row :gutter="[16, 16]">
       <a-col :xs="24" :sm="12" :xl="6">
-        <a-card :bordered="false" class="kpi-card">
+        <a-card :bordered="false" class="kpi-card tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <div class="tw:flex tw:items-start tw:justify-between">
             <a-statistic title="درآمد" :value="fmt.money(kpis.revenue.value)" />
             <a-tag color="green">+{{ kpis.revenue.delta }}%</a-tag>
@@ -31,7 +25,7 @@
         </a-card>
       </a-col>
       <a-col :xs="24" :sm="12" :xl="6">
-        <a-card :bordered="false" class="kpi-card">
+        <a-card :bordered="false" class="kpi-card tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <div class="tw:flex tw:items-start tw:justify-between">
             <a-statistic title="نرخ تبدیل" :value="kpis.cvRate.value" :precision="2" suffix="%" />
             <a-tag :color="kpis.cvRate.delta >= 0 ? 'green' : 'red'">
@@ -42,7 +36,7 @@
         </a-card>
       </a-col>
       <a-col :xs="24" :sm="12" :xl="6">
-        <a-card :bordered="false" class="kpi-card">
+        <a-card :bordered="false" class="kpi-card tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <div class="tw:flex tw:items-start tw:justify-between">
             <a-statistic title="میانگین سبد" :value="fmt.money(kpis.aov.value)" />
             <a-tag color="blue">+{{ kpis.aov.delta }}%</a-tag>
@@ -51,7 +45,7 @@
         </a-card>
       </a-col>
       <a-col :xs="24" :sm="12" :xl="6">
-        <a-card :bordered="false" class="kpi-card">
+        <a-card :bordered="false" class="kpi-card tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <div class="tw:flex tw:items-start tw:justify-between">
             <a-statistic title="بانس‌ریت" :value="kpis.bounce.value" :precision="1" suffix="%" />
             <a-tag color="red">-{{ Math.abs(kpis.bounce.delta) }}%</a-tag>
@@ -63,29 +57,21 @@
 
     <a-row :gutter="[16, 16]">
       <a-col :xs="24" :xl="16">
-        <a-card :bordered="false" title="ترند ترافیک و تبدیل">
+        <a-card :bordered="false" title="ترند ترافیک و تبدیل" class="tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <a-tabs v-model:activeKey="activeTab" style="direction: ltr">
             <a-tab-pane key="traffic" tab="ترافیک">
               <div class="tw:grid tw:grid-cols-12 tw:gap-2 tw:h-44">
-                <div
-                  v-for="(v, i) in trafficBars"
-                  :key="i"
-                  class="tw:col-span-1 tw:flex tw:items-end"
-                >
-                  <div
-                    class="tw:w-full tw:rounded-md tw:bg-gradient-to-t tw:from-blue-500/30 tw:to-blue-500"
-                    :style="{ height: v + '%' }"
-                  />
+                <div v-for="(v, i) in trafficBars" :key="i" class="tw:col-span-1 tw:flex tw:items-end">
+                  <div class="tw:w-full tw:rounded-md tw:bg-gradient-to-t tw:from-blue-500/30 tw:to-blue-500"
+                    :style="{ height: v + '%' }" />
                 </div>
               </div>
             </a-tab-pane>
             <a-tab-pane key="conversions" tab="تبدیل">
               <div class="tw:grid tw:grid-cols-12 tw:gap-2 tw:h-44">
                 <div v-for="(v, i) in convBars" :key="i" class="tw:col-span-1 tw:flex tw:items-end">
-                  <div
-                    class="tw:w-full tw:rounded-md tw:bg-gradient-to-t tw:from-emerald-500/30 tw:to-emerald-500"
-                    :style="{ height: v + '%' }"
-                  />
+                  <div class="tw:w-full tw:rounded-md tw:bg-gradient-to-t tw:from-emerald-500/30 tw:to-emerald-500"
+                    :style="{ height: v + '%' }" />
                 </div>
               </div>
             </a-tab-pane>
@@ -94,7 +80,7 @@
       </a-col>
 
       <a-col :xs="24" :xl="8">
-        <a-card :bordered="false" title="منابع ترافیک">
+        <a-card :bordered="false" title="منابع ترافیک" class="tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <div class="tw:space-y-4">
             <div v-for="s in sources" :key="s.name" class="tw:flex tw:items-center tw:gap-3">
               <a-avatar :style="{ background: s.color }" size="small">{{ s.short }}</a-avatar>
@@ -111,21 +97,12 @@
 
     <a-row :gutter="[16, 16]">
       <a-col :span="24">
-        <a-card :bordered="false" title="برترین صفحات" :extra="pagesExtra">
-          <a-table
-            :columns="pageColumns"
-            :data-source="topPages"
-            :pagination="{ pageSize: 5 }"
-            size="middle"
-            row-key="path"
-          >
+        <a-card :bordered="false" title="برترین صفحات" :extra="pagesExtra" class="tw:!bg-white tw:dark:!bg-[#1a1a1a]">
+          <a-table :columns="pageColumns" :data-source="topPages" :pagination="{ pageSize: 5 }" size="middle"
+            row-key="path">
             <template #bodyCell="{ column, record }">
               <template v-if="column.dataIndex === 'ctr'">
-                <a-progress
-                  :percent="record.ctr"
-                  size="small"
-                  :status="record.ctr > 3 ? 'active' : 'normal'"
-                />
+                <a-progress :percent="record.ctr" size="small" :status="record.ctr > 3 ? 'active' : 'normal'" />
               </template>
               <template v-else-if="column.dataIndex === 'views'">
                 {{ fmt.num(record.views) }}
@@ -243,5 +220,9 @@ const fmt = {
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.35),
     0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+:deep(.ant-table) {
+  background-color: transparent !important;
 }
 </style>

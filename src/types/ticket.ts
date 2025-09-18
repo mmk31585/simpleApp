@@ -1,12 +1,9 @@
+
+import type { User } from "@/types/user";
+
 export type TicketStatus = "open" | "in-progress" | "closed";
 export type Priority = "low" | "medium" | "high" | "critical";
 export type Service = "technical" | "billing" | "general" | "bug-report" | "feature-request";
-
-export interface User {
-  id: string;
-  name: string;
-  avatar: string;
-}
 
 export interface Comment {
   id: string;

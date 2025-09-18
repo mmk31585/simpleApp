@@ -1,14 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div
-    class="tw:w-full tw:h-full tw:p-4 tw:sm:p-6 tw:space-y-6 tw:bg-white/60 tw:dark:bg-white/5 tw:backdrop-blur"
-  >
-    <a-page-header
-      :ghost="true"
-      class="tw:p-0"
-      title="خانهٔ داشبورد"
-      sub-title="مرور سریع وضعیت امروز"
-    >
+  <div class="tw:w-full tw:h-full tw:p-4 tw:sm:p-6 tw:space-y-6 tw:bg-white/60 tw:dark:bg-white/5 tw:backdrop-blur">
+    <a-page-header :ghost="true" class="tw:p-0" title="خانهٔ داشبورد" sub-title="مرور سریع وضعیت امروز">
       <template #extra>
         <div class="tw:w-full tw:flex tw:flex-wrap tw:gap-2 tw:justify-end">
           <a-segmented v-model:value="range" :options="ranges" style="direction: ltr" />
@@ -20,31 +13,13 @@
     </a-page-header>
 
     <a-row :gutter="[16, 16]">
-      <a-col
-        v-for="(k, i) in kpis"
-        :key="i"
-        :xs="k.col.xs"
-        :sm="k.col.sm"
-        :md="k.col.md"
-        :lg="k.col.lg"
-        :xl="k.col.xl"
-      >
+      <a-col v-for="(k, i) in kpis" :key="i" :xs="k.col.xs" :sm="k.col.sm" :md="k.col.md" :lg="k.col.lg" :xl="k.col.xl">
         <!-- <a-card :bordered="false" class="stat-card tw:bg-base"> -->
         <div
-          class="tw:bg-amber-400 tw:rounded-2xl tw:py-4 tw:px-6 tw:h-48 tw:flex tw:flex-col tw:justify-center"
-        >
-          <a-statistic
-            :title="k.title"
-            :value="k.value"
-            :precision="k.precision"
-            :suffix="k.suffix"
-          />
+          class="tw:bg-white tw:dark:bg-[#1a1a1a] tw:rounded-2xl tw:py-4 tw:px-6 tw:h-48 tw:flex tw:flex-col tw:justify-center">
+          <a-statistic :title="k.title" :value="k.value" :precision="k.precision" :suffix="k.suffix" />
 
-          <div
-            v-if="k.type === 'badge'"
-            class="tw:flex tw:items-center tw:gap-2 tw:mt-3"
-            :class="k.class"
-          >
+          <div v-if="k.type === 'badge'" class="tw:flex tw:items-center tw:gap-2 tw:mt-3" :class="k.class">
             <a-badge :status="k.badgeStatus || 'default'" />
             <span class="tw:text-xs sm:tw:text-sm">{{ k.text }}</span>
           </div>
@@ -64,15 +39,9 @@
 
     <a-row :gutter="[16, 16]">
       <a-col :xs="24" :lg="16">
-        <a-card :bordered="false" title="سفارشات اخیر" :extra="tableExtra">
-          <a-table
-            :columns="columns"
-            :data-source="rows"
-            :pagination="{ pageSize: 5 }"
-            size="middle"
-            row-key="id"
-            :scroll="{ x: 640 }"
-          >
+        <a-card :bordered="false" title="سفارشات اخیر" :extra="tableExtra" class="tw:!bg-white tw:dark:!bg-[#1a1a1a]">
+          <a-table :columns="columns" :data-source="rows" :pagination="{ pageSize: 5 }" size="middle" row-key="id"
+            class="tw:!bg-transparent" :scroll="{ x: 640 }">
             <template #bodyCell="{ column, record }">
               <template v-if="column.dataIndex === 'status'">
                 <a-tag :color="statusColor(record.status)">{{ record.status }}</a-tag>
@@ -86,7 +55,7 @@
       </a-col>
 
       <a-col :xs="24" :lg="8">
-        <a-card :bordered="false" title="کارهای اخیر">
+        <a-card :bordered="false" title="کارهای اخیر" class="tw:!bg-white tw:dark:!bg-[#1a1a1a]">
           <a-timeline>
             <a-timeline-item v-for="(it, i) in timelineItems" :key="i" :color="it.color">
               {{ it.text }}
@@ -99,12 +68,7 @@
             <a-typography-text type="secondary" class="tw:block">اکشن‌های سریع</a-typography-text>
 
             <div class="tw:flex tw:flex-wrap tw:gap-2">
-              <a-button
-                v-for="(act, i) in quickActions"
-                :key="i"
-                :type="act.type || 'default'"
-                @click="act.onClick"
-              >
+              <a-button v-for="(act, i) in quickActions" :key="i" :type="act.type || 'default'" @click="act.onClick">
                 {{ act.label }}
               </a-button>
             </div>
@@ -129,36 +93,36 @@ type Row = {
 type KPICol = { xs: number; sm: number; md: number; lg: number; xl: number };
 type KPIItem =
   | {
-      title: string;
-      value: number;
-      precision?: number;
-      suffix?: string;
-      type: "badge";
-      text: string;
-      class?: string;
-      badgeStatus?: "success" | "processing" | "default" | "warning" | "error";
-      col: KPICol;
-    }
+    title: string;
+    value: number;
+    precision?: number;
+    suffix?: string;
+    type: "badge";
+    text: string;
+    class?: string;
+    badgeStatus?: "success" | "processing" | "default" | "warning" | "error";
+    col: KPICol;
+  }
   | {
-      title: string;
-      value: number;
-      precision?: number;
-      suffix?: string;
-      type: "progress";
-      text: string;
-      percent: number;
-      col: KPICol;
-    }
+    title: string;
+    value: number;
+    precision?: number;
+    suffix?: string;
+    type: "progress";
+    text: string;
+    percent: number;
+    col: KPICol;
+  }
   | {
-      title: string;
-      value: number;
-      precision?: number;
-      suffix?: string;
-      type: "tag";
-      text: string;
-      tagColor?: string;
-      col: KPICol;
-    };
+    title: string;
+    value: number;
+    precision?: number;
+    suffix?: string;
+    type: "tag";
+    text: string;
+    tagColor?: string;
+    col: KPICol;
+  };
 
 const kpiCol: KPICol = { xs: 24, sm: 12, md: 12, lg: 6, xl: 6 };
 
@@ -271,5 +235,9 @@ const onPrimaryAction = () => {
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.35),
     0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+:deep(.ant-table) {
+  background-color: transparent !important;
 }
 </style>
