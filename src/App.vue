@@ -1,11 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView } from "vue-router";
+import { useThemeStore } from "@/stores/theme";
+import { themeConfig } from "@/plugins/antdv.theme";
+
+const themeStore = useThemeStore();
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <a-config-provider
+    :theme="{ cssVar: true, ...themeConfig(themeStore.isDark) }"
+    class="tw:transition-colors tw:duration-150"
+    direction="rtl"
+  >
+    <RouterView />
+  </a-config-provider>
 </template>
 
 <style scoped></style>

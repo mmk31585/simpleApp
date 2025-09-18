@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap");
+
+@import "tailwindcss" prefix(tw);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --bg-base: #f7f8fb;
+  --bg-layer: #ffffff;
+  --primary: #3b82f6;
+  --text-base: #111827;
+  --text: #374151;
+  --radius: 12px;
+  --font: "Inter", "Peyda", "Vazirmatn", ui-sans-serif, system-ui;
+}
+
+@font-face {
+  font-family: "Peyda";
+  src: url("./font/Peyda/PeydaWeb-Medium.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PeydaBold";
+  src: url("./font/Peyda/PeydaWeb-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: bold;
+}
+
+@font-face {
+  font-family: "PeydaRegular";
+  src: url("./font/Peyda/PeydaWeb-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: bold;
+}
+
+.regular {
+  font-family: "PeydaRegular", sans-serif;
+}
+
+.bold {
+  font-family: "PeydaBold", sans-serif;
+}
+
+html {
+  direction: rtl;
+  font-family: "Peyda", "Vazirmatn", sans-serif;
+  user-select: none;
+  transition:
+    background-color 0.5s,
+    color 0.5s;
+}
+
+:root {
+  --ui-primary: #3b82f6;
+}
+
+/* :root[data-theme="light"] {
+  --bg-base: #f7f8fb;
+  --bg-layer: #ffffff;
+  --primary: #3B82F6;
+  --text-base: #111827;
+  --text: #374151;
+  --radius: 12px;
+  --font: "Inter", "Peyda", "Vazirmatn", ui-sans-serif, system-ui;
+}
+
+:root[data-theme="dark"] {
+  --bg-base: #0b1f2a;
+  --bg-layer: #1e293b;
+  --primary: #60A5FA;
+  --text-base: #f9fafb;
+  --text: #e5e7eb;
+  --radius: 12px;
+  --font: "Inter", "Peyda", "Vazirmatn", ui-sans-serif, system-ui;
+} */
