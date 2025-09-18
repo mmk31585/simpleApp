@@ -4,6 +4,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --bg-base: #f7f8fb;
+  --bg-layer: #ffffff;
+  --primary: #3b82f6;
+  --text-base: #111827;
+  --text: #374151;
+  --radius: 12px;
+  --font: "Inter", "Peyda", "Vazirmatn", ui-sans-serif, system-ui;
+}
+
 @font-face {
   font-family: "Peyda";
   src: url("./font/Peyda/PeydaWeb-Medium.woff2") format("woff2");

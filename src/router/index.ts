@@ -23,10 +23,15 @@ export const router = createRouter({
           name: "AnalyticsPage",
           component: () => import("@/view/dashboard/Analytics.vue"),
         },
+        // {
+        //   path: "messages",
+        //   name: "MessagesPage",
+        //   component: () => import("@/view/dashboard/Messages.vue"),
+        // },
         {
-          path: "messages",
-          name: "MessagesPage",
-          component: () => import("@/view/dashboard/Messages.vue"),
+          path: "tickets",
+          name: "TicketsPage",
+          component: () => import("@/view/dashboard/tickets.vue"),
         },
 
         // { path: 'nav/5', component: () => import('@/view/dashboard/Nav5.vue') },

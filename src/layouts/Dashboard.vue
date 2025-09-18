@@ -25,7 +25,7 @@
         </a-layout-header>
 
         <a-layout-content>
-          <keep-alive include="DashboardHome,AnalyticsPage">
+          <keep-alive include="DashboardHome,AnalyticsPage,TicketsPage">
             <router-view />
           </keep-alive>
         </a-layout-content>

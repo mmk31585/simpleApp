@@ -11,7 +11,7 @@ import {
 export const menuItems: NonNullable<MenuProps["items"]> = [
   { key: "1", icon: () => h(PieChartOutlined), label: "داشبورد", title: "داشبورد" },
   { key: "2", icon: () => h(DesktopOutlined), label: "تحلیل‌ها", title: "تحلیل‌ها" },
-  { key: "3", icon: () => h(InboxOutlined), label: "پیام‌ها", title: "پیام‌ها" },
+  { key: "3", icon: () => h(InboxOutlined), label: "تیکت ها", title: "تیکت ها" },
   {
     key: "sub1",
     icon: () => h(MailOutlined),
@@ -41,7 +41,7 @@ export const menuItems: NonNullable<MenuProps["items"]> = [
 export const menuRouteMap: Record<string, string> = {
   "1": "/dashboard/home",
   "2": "/dashboard/analytics",
-  "3": "/dashboard/messages",
+  "3": "/dashboard/tickets",
   "5": "/dashboard/nav/5",
   "6": "/dashboard/nav/6",
   "7": "/dashboard/nav/7",

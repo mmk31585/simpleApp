@@ -29,7 +29,10 @@
         :lg="k.col.lg"
         :xl="k.col.xl"
       >
-        <a-card :bordered="false" class="stat-card">
+        <!-- <a-card :bordered="false" class="stat-card tw:bg-base"> -->
+        <div
+          class="tw:bg-amber-400 tw:rounded-2xl tw:py-4 tw:px-6 tw:h-48 tw:flex tw:flex-col tw:justify-center"
+        >
           <a-statistic
             :title="k.title"
             :value="k.value"
@@ -54,7 +57,8 @@
           <div v-else-if="k.type === 'tag'" class="tw:mt-3">
             <a-tag :color="k.tagColor || 'default'">{{ k.text }}</a-tag>
           </div>
-        </a-card>
+        </div>
+        <!-- </a-card> -->
       </a-col>
     </a-row>
 

@@ -16,7 +16,7 @@
           <a-select-option value="ads">تبلیغات</a-select-option>
           <a-select-option value="referral">ارجاعی</a-select-option>
         </a-select>
-        <a-range-picker v-model:value="range" :allowClear="false" />
+        <a-range-picker v-model:value="range" :allowClear="false" style="direction: ltr" />
       </template>
     </a-page-header>
 
